@@ -1,0 +1,6 @@
+{
+  "name": "Tradelense",
+  "description": "An advanced AI-powered trading journal, psychology tracker, and analytics platform designed to help traders improve consistency.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
