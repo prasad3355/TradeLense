@@ -1,0 +1,6 @@
+﻿
+> react-example@0.0.0 lint
+> tsc --noEmit
+
+src/components/TradeDetailView.tsx(206,53): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SetStateAction<"none" | "impatience" | "fear exits" | "greed" | "overconfidence" | "revenge behavior" | "hesitation">'.
+src/components/TradeDetailView.tsx(222,53): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SetStateAction<"none" | "early exit" | "revenge trading" | "FOMO entry" | "oversized position" | "moved stop loss" | "poor RR" | "overtrading" | "late entry">'.

@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Trade } from '../types';
-import { 
-  X, 
-  Cpu, 
-  TrendingUp, 
-  TrendingDown, 
-  Clock, 
-  ShieldCheck, 
-  Brain, 
-  FileText, 
-  Save, 
-  Trash2, 
-  Zap, 
+import {
+  X,
+  Cpu,
+  TrendingUp,
+  TrendingDown,
+  Clock,
+  ShieldCheck,
+  Brain,
+  FileText,
+  Save,
+  Trash2,
+  Zap,
   ChevronRight
 } from 'lucide-react';
 
@@ -39,7 +39,7 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
   const handleSave = () => {
     // Re-verify outputs
     const calculatedPnl = Number(((exitPrice - entryPrice) * (trade.type === 'LONG' ? 1 : -1) * (trade.pips && trade.pnl ? (trade.pnl / trade.pips) : 100) * size).toFixed(2));
-    
+
     const updatedTrade: Trade = {
       ...trade,
       asset: assetName,
@@ -53,7 +53,7 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
       emotion_detected: emotion as any,
       mistake_type: mistake as any,
     };
-    
+
     onUpdateTrade(updatedTrade);
     setIsEditing(false);
   };
@@ -64,7 +64,7 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
     <div id={`trade-detail-${trade.id}`} className="fixed inset-0 z-50 flex items-center justify-end bg-black/85 backdrop-blur-sm p-4 font-sans">
       {/* Drawer content panel */}
       <div className="w-full max-w-4xl h-[92vh] bg-[#0c0c0e] border border-white/10 rounded-xl overflow-hidden flex flex-col shadow-2xl relative">
-        
+
         {/* Header section with telemetry and absolute control */}
         <div className="px-6 py-4 bg-[#111114] border-b border-white/5 flex justify-between items-center z-10">
           <div className="flex items-center gap-3">
@@ -72,11 +72,10 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-sm font-sans font-black text-white tracking-widest">{trade.asset}</span>
-                <span className={`px-2 py-0.5 rounded text-[9px] font-mono tracking-widest font-bold ${
-                  trade.type === 'LONG' 
-                    ? 'bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/10' 
-                    : 'bg-brand-purple/10 text-brand-purple border border-brand-purple/10'
-                }`}>
+                <span className={`px-2 py-0.5 rounded text-[9px] font-mono tracking-widest font-bold ${trade.type === 'LONG'
+                  ? 'bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/10'
+                  : 'bg-brand-purple/10 text-brand-purple border border-brand-purple/10'
+                  }`}>
                   {trade.type}
                 </span>
                 <span className="text-[10px] font-mono text-[#516365]">ID: {trade.id}</span>
@@ -86,7 +85,7 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsEditing(!isEditing)}
@@ -105,26 +104,26 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
 
         {/* Scrollable analysis panels dashboard */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
+
             {/* Visual Screenshot display & timeline (Left lg:col-span-7) */}
             <div className="lg:col-span-7 space-y-6">
-              
+
               <div className="glass-fill p-2.5 rounded-xl border border-white/5 overflow-hidden">
                 <div className="flex justify-between items-center text-[10px] font-mono font-bold uppercase tracking-wider text-[#849495] pb-2 px-1">
                   <span className="flex items-center gap-1.5"><Brain size={12} className="text-brand-cyan" /> Screen Analysis Canvas</span>
                   <span className="text-[#516365]">OCR RESOLVED</span>
                 </div>
-                
+
                 <div className="bg-[#050506] rounded-lg border border-white/5 aspect-video w-full overflow-hidden relative flex items-center justify-center group">
-                  <img 
-                    src={trade.image_url || "/api/images/placeholder_btc"} 
-                    alt={`${trade.asset} setup`} 
+                  <img
+                    src={trade.image_url || "/api/images/placeholder_btc"}
+                    alt={`${trade.asset} setup`}
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-contain filter brightness-95"
                   />
-                  
+
                   {/* Floating price tag markings (extracted coordinates visualization overlay) */}
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/50 to-transparent p-3 flex justify-between font-mono text-[9px] text-[#b9cacb] opacity-80 backdrop-blur-[2px]">
                     <div className="flex gap-4">
@@ -146,64 +145,64 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3 font-mono text-xs text-[#b9cacb]">
                     <div className="space-y-1">
                       <label className="text-[10px] text-[#849495]">ASSET</label>
-                      <input 
-                        type="text" 
-                        value={assetName} 
+                      <input
+                        type="text"
+                        value={assetName}
                         onChange={(e) => setAssetName(e.target.value)}
                         className="w-full bg-black border border-white/10 rounded px-2.5 py-1.5 text-white active:border-brand-cyan"
                       />
                     </div>
                     <div className="space-y-1">
                       <label className="text-[10px] text-[#849495]">ENTRY PRICE</label>
-                      <input 
-                        type="number" 
-                        value={entryPrice} 
+                      <input
+                        type="number"
+                        value={entryPrice}
                         onChange={(e) => setEntryPrice(Number(e.target.value))}
                         className="w-full bg-black border border-white/10 rounded px-2.5 py-1.5 text-white"
                       />
                     </div>
                     <div className="space-y-1">
                       <label className="text-[10px] text-[#849495]">EXIT PRICE</label>
-                      <input 
-                        type="number" 
-                        value={exitPrice} 
+                      <input
+                        type="number"
+                        value={exitPrice}
                         onChange={(e) => setExitPrice(Number(e.target.value))}
                         className="w-full bg-black border border-white/10 rounded px-2.5 py-1.5 text-white"
                       />
                     </div>
                     <div className="space-y-1">
                       <label className="text-[10px] text-[#849495]">STOP LOSS (SL)</label>
-                      <input 
-                        type="number" 
-                        value={sl} 
+                      <input
+                        type="number"
+                        value={sl}
                         onChange={(e) => setSl(Number(e.target.value))}
                         className="w-full bg-black border border-white/10 rounded px-2.5 py-1.5 text-white"
                       />
                     </div>
                     <div className="space-y-1">
                       <label className="text-[10px] text-[#849495]">TAKE PROFIT (TP)</label>
-                      <input 
-                        type="number" 
-                        value={tp} 
+                      <input
+                        type="number"
+                        value={tp}
                         onChange={(e) => setTp(Number(e.target.value))}
                         className="w-full bg-black border border-white/10 rounded px-2.5 py-1.5 text-white"
                       />
                     </div>
                     <div className="space-y-1">
                       <label className="text-[10px] text-[#849495]">SIZE (LOTS)</label>
-                      <input 
-                        type="number" 
-                        step="0.01" 
-                        value={size} 
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={size}
                         onChange={(e) => setSize(Number(e.target.value))}
                         className="w-full bg-black border border-white/10 rounded px-2.5 py-1.5 text-white"
                       />
                     </div>
                     <div className="space-y-1 col-span-2 md:col-span-1">
                       <label className="text-[10px] text-[#849495]">PSYCHIATRIC EMOTION</label>
-                      <select 
+                      <select
                         value={emotion}
-                        onChange={(e) => setEmotion(e.target.value)}
+                        onChange={(e) => setEmotion(e.target.value as any)}
                         className="w-full bg-black border border-white/10 rounded px-2 py-1.5 text-white"
                       >
                         <option value="none">none (Highly Disciplined)</option>
@@ -217,9 +216,9 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
                     </div>
                     <div className="space-y-1 col-span-2">
                       <label className="text-[10px] text-[#849495]">SYSTEMIC MISTAKE</label>
-                      <select 
+                      <select
                         value={mistake}
-                        onChange={(e) => setMistake(e.target.value)}
+                        onChange={(e) => setMistake(e.target.value as any)}
                         className="w-full bg-black border border-white/10 rounded px-2 py-1.5 text-white"
                       >
                         <option value="none">none</option>
@@ -238,8 +237,8 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div className="space-y-1">
                       <label className="text-[10px] font-mono text-[#849495]">AI PARSED NOTES</label>
-                      <textarea 
-                        value={notes} 
+                      <textarea
+                        value={notes}
                         onChange={(e) => setNotes(e.target.value)}
                         rows={2}
                         className="w-full bg-black border border-white/10 rounded px-2.5 py-1 text-xs text-[#b9cacb] font-mono"
@@ -247,8 +246,8 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
                     </div>
                     <div className="space-y-1">
                       <label className="text-[10px] font-mono text-[#849495]">PERSONAL USER DIARY CORRECTIONS</label>
-                      <textarea 
-                        value={userNotes} 
+                      <textarea
+                        value={userNotes}
                         onChange={(e) => setUserNotes(e.target.value)}
                         rows={2}
                         placeholder="Write personal trade learnings & execution errors log..."
@@ -305,12 +304,12 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
                 </span>
                 <div className="relative pl-6 space-y-3 font-mono text-[10px]">
                   <div className="absolute left-2.5 top-1 bottom-1.5 w-px bg-white/5" />
-                  
+
                   <div className="relative">
                     <span className="absolute -left-5 w-2 h-2 rounded-full bg-brand-cyan/40 border border-brand-cyan" />
                     <div className="text-[#849495]">ENTRY EVENT</div>
                     <p className="text-white">Opened position of {trade.size || 1.0} lots at ${trade.entryPrice.toLocaleString()}</p>
-                    <span className="text-[9px] text-[#516365]">Time: {trade.chartTime ? trade.chartTime.slice(11,19) + " UTC" : "Instant"}</span>
+                    <span className="text-[9px] text-[#516365]">Time: {trade.chartTime ? trade.chartTime.slice(11, 19) + " UTC" : "Instant"}</span>
                   </div>
 
                   {trade.candleCount && (
@@ -334,20 +333,19 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
 
             {/* Cognitive Intelligence, Audits, Core scores (Right lg:col-span-5) */}
             <div className="lg:col-span-5 space-y-6">
-              
+
               {/* Returns & Core Statistics block */}
-              <div className={`p-5 rounded-xl border flex flex-col justify-between ${
-                isProfit 
-                  ? 'bg-brand-emerald/5 border-brand-emerald/15 text-brand-emerald' 
-                  : 'bg-red-400/5 border-red-400/15 text-red-400'
-              }`}>
+              <div className={`p-5 rounded-xl border flex flex-col justify-between ${isProfit
+                ? 'bg-brand-emerald/5 border-brand-emerald/15 text-brand-emerald'
+                : 'bg-red-400/5 border-red-400/15 text-red-400'
+                }`}>
                 <div>
                   <span className="text-[9px] font-mono uppercase tracking-widest font-black text-[#849495]">NET RETURN STATUS</span>
                   <div className="text-3xl font-mono font-bold mt-1 text-white">
                     {isProfit ? '+' : ''}${trade.pnl.toLocaleString()}
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4 mt-6 pt-4 border-t border-white/5 text-xs text-[#849495] font-mono">
                   <div>
                     <span>ESTIMATE OUTCOME</span>
@@ -365,9 +363,9 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
                 <span className="text-[9px] font-mono text-[#849495] uppercase tracking-wider font-bold block flex items-center gap-1.5">
                   <ShieldCheck size={12} className="text-brand-cyan" /> Executive Performance Matrix
                 </span>
-                
+
                 <div className="space-y-3 font-mono text-[10px]">
-                  
+
                   {/* Score item 1 */}
                   <div className="space-y-1">
                     <div className="flex justify-between text-[#849495]">
@@ -375,8 +373,8 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
                       <span className="text-brand-cyan font-bold">{trade.discipline_score || 90}%</span>
                     </div>
                     <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-brand-cyan" 
+                      <div
+                        className="h-full bg-brand-cyan"
                         style={{ width: `${trade.discipline_score || 90}%` }}
                       />
                     </div>
@@ -389,8 +387,8 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
                       <span className="text-brand-purple font-bold">{trade.risk_management_quality || 85}%</span>
                     </div>
                     <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-brand-purple" 
+                      <div
+                        className="h-full bg-brand-purple"
                         style={{ width: `${trade.risk_management_quality || 85}%` }}
                       />
                     </div>
@@ -403,8 +401,8 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
                       <span className="text-brand-emerald font-bold">{trade.execution_quality || 95}%</span>
                     </div>
                     <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-brand-emerald" 
+                      <div
+                        className="h-full bg-brand-emerald"
                         style={{ width: `${trade.execution_quality || 95}%` }}
                       />
                     </div>
@@ -418,21 +416,21 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
                 <span className="text-[9px] font-mono text-brand-purple uppercase tracking-widest font-black block flex items-center gap-1.5">
                   <Brain size={13} /> Institutional Cognitive Auditing
                 </span>
-                
+
                 <div className="space-y-3">
                   <div className="p-3.5 bg-black/50 border border-white/5 rounded-lg">
                     <div className="text-[8.5px] font-mono text-[#849495] uppercase">Detected Psychological Emotion</div>
                     <div className="text-xs font-sans font-bold text-white uppercase tracking-tight mt-1">
-                      {trade.emotion_detected && trade.emotion_detected !== 'none' 
-                        ? trade.emotion_detected 
+                      {trade.emotion_detected && trade.emotion_detected !== 'none'
+                        ? trade.emotion_detected
                         : 'NO EMOTIONAL INTRUSION (Highly Disciplined)'}
                     </div>
                     <p className="text-[10px] text-[#849495] font-light mt-1">
-                      {trade.emotion_detected === 'revenge behavior' 
+                      {trade.emotion_detected === 'revenge behavior'
                         ? 'Immediate high bias detected to re-enter drawdown positions without model context confirmation.'
                         : trade.emotion_detected === 'impatience'
-                        ? 'Exhibits early containment of trades prior to core supply level checks.'
-                        : 'Adhering to plan criteria and institutional guidelines.'}
+                          ? 'Exhibits early containment of trades prior to core supply level checks.'
+                          : 'Adhering to plan criteria and institutional guidelines.'}
                     </p>
                   </div>
 
@@ -442,11 +440,11 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
                       {trade.mistake_type && trade.mistake_type !== 'none' ? trade.mistake_type : 'NONE (Perfect Execution Pattern)'}
                     </div>
                     <p className="text-[10px] text-[#849495] font-light mt-1 text-justify">
-                      {trade.mistake_type === 'moved stop loss' 
+                      {trade.mistake_type === 'moved stop loss'
                         ? 'Violated hard stop bounds dynamically. Exposes trading capital to volatile black swan tail risks.'
                         : trade.mistake_type === 'early exit'
-                        ? 'Exited position prematurely. Substantially reduces long-term expectation averages.'
-                        : 'Maintained strict systematic execution parameters throughout.'}
+                          ? 'Exited position prematurely. Substantially reduces long-term expectation averages.'
+                          : 'Maintained strict systematic execution parameters throughout.'}
                     </p>
                   </div>
                 </div>
@@ -459,7 +457,7 @@ export default function TradeDetailView({ trade, onClose, onUpdateTrade, onDelet
                   <div>
                     <strong className="block font-mono tracking-wider font-bold">STRUCTURAL VALIDATION WARNINGS</strong>
                     <ul className="list-disc pl-4 space-y-1 mt-1 font-sans text-[11px] text-[#b9cacb]">
-                      {trade.validationWarnings.map((w,i) => (
+                      {trade.validationWarnings.map((w, i) => (
                         <li key={i}>{w}</li>
                       ))}
                     </ul>
