@@ -12,6 +12,8 @@ export function createApp(): Express {
     app.use(express.json({ limit: '2mb' }));
 
     // API routes
+    // Expose foundational /health directly at root, while preserving /api/health alias
+    app.use('/', healthRouter);
     app.use('/api', healthRouter);
 
     // Catch-all 404 for API routes
