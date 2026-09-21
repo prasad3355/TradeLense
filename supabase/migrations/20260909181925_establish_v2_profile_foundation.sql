@@ -28,8 +28,10 @@ CREATE POLICY "Users can update their own profile."
   FOR UPDATE 
   USING (auth.uid() = id);
 
-
-
+CREATE POLICY "Users can delete their own profile." 
+  ON public.profiles
+  FOR DELETE 
+  USING (auth.uid() = id);
 -- Establish updated_at auto-updating strategy
 CREATE OR REPLACE FUNCTION public.handle_updated_at()
 RETURNS TRIGGER AS $$
