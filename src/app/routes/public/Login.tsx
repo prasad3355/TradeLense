@@ -36,9 +36,15 @@ export function Login() {
                 return;
             }
 
-            // Determine redirect path
-            const from = location.state?.from?.pathname || '/app/dashboard';
-            navigate(from, { replace: true });
+            // Determine safe redirect path
+            let fromPath = location.state?.from?.pathname || '/app/dashboard';
+
+            // Explicitly prevent open redirects by ensuring the path is absolutely internal
+            if (typeof fromPath !== 'string' || !fromPath.startsWith('/')) {
+                fromPath = '/app/dashboard';
+            }
+
+            navigate(fromPath, { replace: true });
         } catch (err) {
             setError('An unexpected error occurred during sign in.');
         } finally {
