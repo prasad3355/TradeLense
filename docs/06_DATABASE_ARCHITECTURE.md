@@ -218,3 +218,39 @@ V1 relies on standard Postgres indexing. Future scaling involves Database Shardi
 ## 44. Document Governance
 - **Owner:** Database / Backend Architect.
 - **Rules:** Schema migrations MUST be reviewed against this document and the product requirements. The UI cannot dictate missing constraints in the database layer. 
+
+## 45. Core Trade Model (Implemented)
+The Core Trade Model (`public.trades`) serves as the central, authoritative repository for the V2 Trading Journal.
+
+### Entity Purpose & Ownership
+- **Purpose:** Securely store verified, canonical trade execution outcomes that power all subsequent deterministic analytics and coaching.
+- **Ownership:** Exclusively mapped to `auth.users(id)` via the `user_id` column. Client-controlled ownership payloads are entirely untrusted and structurally rejected by both API and RLS.
+
+### Authority and Provenance
+- `entry_source` (Text): Defines the execution origin (`MANUAL`, `AI_EXTRACTED`, `SYSTEM_DERIVED`). AI acts as an implicit extraction tool, but by the time it reaches the database, it requires a human's confirmation.
+- **P&L and Risk/Reward Ratios:** Stored values like `pnl_realized` act as the ultimate record, heavily governed by deterministic application-layer calculations where inputs (`entry_price`, `exit_price`, `position_size`) exist securely. Dynamic values like Risk-to-Reward (R:R) are not stored redundantly to prevent conflicting logic, and are derived dynamically during analytical reads.
+
+### Field Specifications
+- **Important Fields:** `id` (UUID), `user_id` (Auth FK), `symbol` (Text), `entry_timestamp` (TZ). These are `NOT NULL` and form the foundation of a journal entry.
+- **Nullable Fields:** To support open/ongoing trades or partial entries, fields such as `exit_timestamp`, `exit_price`, `stop_loss`, `take_profit`, `position_size`, `notes`, and `mistakes` securely accept `NULL`. Missing data utilizes `NULL` strictly, abstaining from fake zeroes.
+- **Numeric Types:** Financial fields (Prices, Position Size, P&L, Fees) STRICTLY utilize `NUMERIC` types preserving absolute decimal fidelity. Native floating-point (e.g. `REAL`, `FLOAT`) precision is universally banned in the database layer.
+- **Timestamps:** Utilizes `TIMESTAMPTZ` (Timestamp with Time Zone, natively UTC). Local time adjustments remain explicitly a frontend/presentation layer concern based on the Profile's timezone.
+
+### Constraints & Indexes
+- **Constraints:** Enforced check limits on `side` (`LONG`, `SHORT`), `outcome` (`WIN`, `LOSS`, `BREAK_EVEN`, `OPEN`), and `entry_source`.
+- **Primary Indexes:** 
+  - `idx_trades_user_id`: Empowers instantaneous RLS constraint resolution.
+  - `idx_trades_user_entry_time`: Facilitates chronological log access securely bound by user.
+  - `idx_trades_user_outcome` / `idx_trades_user_symbol`: Enhances localized analytical slicing.
+
+### Row Level Security (RLS) & Protection Models
+- **SELECT/DELETE:** Hard-restricted using `USING (auth.uid() = user_id)`.
+- **INSERT Protection:** Uses `WITH CHECK (auth.uid() = user_id)` to natively prevent malicious payload insertions asserting false identities.
+- **UPDATE Ownership Protection:** Forces both `USING` and `WITH CHECK` clauses mapped to `auth.uid()`, assuring that an existing owner cannot transfer a trade to a different user mid-cycle.
+
+### Future Associations
+- **Media Relationship:** Future `trade_media` attachments will hold `trade_id` mapping externally. The Trade row itself refrains from storing binary data or local paths.
+- **AI Relationship:** Future AI usage mapping is deferred to `ai_usage_events`. Raw extraction caches do not exist natively on the Canonical Trade table.
+
+### Migration Strategy
+Leveraged Supabase's non-destructive, strictly forward-moving SQL structure natively creating `public.trades` preserving previously established `profiles` constraints identically.
