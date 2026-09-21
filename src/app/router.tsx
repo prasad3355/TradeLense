@@ -4,9 +4,10 @@ import LandingView from '../components/LandingView';
 import { RootLayout } from './layouts/RootLayout';
 import { AppLayout } from './layouts/AppLayout';
 
-import { LoginPlaceholder } from './routes/public/LoginPlaceholder';
-import { SignupPlaceholder } from './routes/public/SignupPlaceholder';
-import { ForgotPasswordPlaceholder } from './routes/public/ForgotPasswordPlaceholder';
+import { Login } from './routes/public/Login';
+import { Signup } from './routes/public/Signup';
+import { ForgotPassword } from './routes/public/ForgotPassword';
+import { UpdatePassword } from './routes/public/UpdatePassword';
 
 import { JournalPlaceholder } from './routes/app/JournalPlaceholder';
 import { DashboardPlaceholder } from './routes/app/DashboardPlaceholder';
@@ -35,15 +36,19 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'login',
-                element: <LoginPlaceholder />,
+                element: <Login />,
             },
             {
                 path: 'signup',
-                element: <SignupPlaceholder />,
+                element: <Signup />,
             },
             {
                 path: 'forgot-password',
-                element: <ForgotPasswordPlaceholder />,
+                element: <ForgotPassword />,
+            },
+            {
+                path: 'update-password',
+                element: <UpdatePassword />,
             },
         ],
     },
