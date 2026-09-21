@@ -33,24 +33,32 @@ Clients **MUST NEVER** provide these fields mutating payloads locally. The Serve
 * **SHORT Semantics:** Prices descend reversing tracking outputs natively. Geometry implies `stop_loss > entry_price > take_profit`. 
 * **Domain Rejection:** Contradictory definitions natively evaluate via `validateTradeGeometry()` ejecting payloads dynamically catching false `INVALID_TRADE_GEOMETRY` assumptions precisely natively.
 
-## 8. P&L & Outcome Determinism
+## 8. Financial Calculation Precision
+To guarantee absolute parity with PostgreSQL's `NUMERIC` columns and avoid catastrophic IEEE 754 floating-point inaccuracies, the calculation layer actively utilizes `decimal.js`.
+
+* **Strategy:** Standard JS primitives (`number`) pass bounds validations, but internally transition explicitly to `Decimal` types traversing arithmetic calculations avoiding fractions. 
+* **Supported Precision:** The application normalizes and returns results padded to `8` decimal places (supporting Equities, Forex, and Crypto fractional bounding optimally without scaling arbitrarily).
+* **Rounding Policy:** Follows standard metric `Decimal.ROUND_HALF_UP` preserving edge fidelity gracefully truncating at the 8th decimal logically.
+* **Output Representation:** Post-derivation, calculations output exactly rounded generic javascript `number` variables facilitating instantaneous API serialization (while still fitting well within the JS double limits because extreme values scale within the absolute bounds safely natively).
+
+## 9. P&L & Outcome Determinism
 * **PNL Logic:** `((Price Movement) * Position_size) - Fees`.
   * *LONG:* `exit_price - entry_price`
   * *SHORT:* `entry_price - exit_price`
-* **Outcome Rules:**
+* **Outcome Rules:** (Operates strictly on exact Decimal checks against absolute zero)
   * PNL `> 0`: `WIN`
   * PNL `< 0`: `LOSS`
   * PNL `== 0`: `BREAK_EVEN`
-* **Note on Precision:** JS Floating Point logic exposes rounding errors statically. Derived sums parse locally translating numeric boundaries locked behind `.toFixed(4)` limits structurally mitigating DB storage fragmentation. Asset contract scaling limits apply generically without explicit `multiplier` variables locally presently.
+* **Limitation Notice:** Current architecture avoids `contract_multiplier` abstractions locally. Asset classes employing fixed modifiers (like Index points/Options sizes) translate mathematically via totalized position scaling natively currently.
 
-## 9. Risk/Reward (R:R) Handling
+## 10. Risk/Reward (R:R) Handling
 The database structure eschews storing calculated `risk_reward_ratio` columns protecting structural truth. Derivations execute actively assessing limits dynamically:
 * **Missing Stops / Targets:** Bounding lacks resolution mapping SL or TP boundaries individually safely returning `null` tracking metrics securely. 
 
-## 10. Provenance & Entry Sources
+## 11. Provenance & Entry Sources
 AI states generate complex extraction payloads initially. When confirming payloads natively, structural APIs inject mapping origins seamlessly marking `entry_source` arrays natively (`MANUAL`, `AI_EXTRACTED`). Clients attempting false provenance mappings bypassing extraction triggers passively receive explicit rejections avoiding false logging natively structures natively seamlessly. 
 
-## 11. Domain Error Codes
+## 12. Domain Error Codes
 | Code | Reason |
 | :--- | :--- |
 | `INVALID_TIMESTAMPS` | Exit occurred before Entry chronologically. |

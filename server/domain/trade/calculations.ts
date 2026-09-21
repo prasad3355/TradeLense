@@ -1,11 +1,18 @@
+import { Decimal } from 'decimal.js';
+
 /**
  * Trade Domain Calculations
- * Enforces pure deterministic derivations for P&L, Risk/Reward, and Outcomes locally
- * decoupled from the Database or API transport layer.
+ * Enforces pure deterministic derivations for P&L, Risk/Reward, and Outcomes locally.
+ * Utilizes `decimal.js` to eliminate IEEE 754 floating-point inaccuracies natively matching 
+ * PostgreSQL NUMERIC exactness.
  */
 
-// Note: For advanced asset classes with contract multipliers (e.g., standard Options equating to 100 shares), 
-// this formula is naively linear. V1 Tradelense calculates raw delta * size cleanly.
+// Supported Application Precision Limit (e.g. up to 8 decimal places supports most equities, crypto)
+const CALCULATION_PRECISION = 8;
+
+// Configure default precision/rounding
+Decimal.set({ precision: 20, rounding: Decimal.ROUND_HALF_UP });
+
 export function calculateRealizedPnL(
     side: 'LONG' | 'SHORT',
     entryPrice: number,
@@ -13,16 +20,24 @@ export function calculateRealizedPnL(
     positionSize: number,
     fees: number = 0
 ): number {
-    let rawPnl = 0;
+    const entry = new Decimal(entryPrice);
+    const exit = new Decimal(exitPrice);
+    const size = new Decimal(positionSize);
+    const f = new Decimal(fees);
+
+    let rawPnl: Decimal;
+
     if (side === 'LONG') {
-        rawPnl = (exitPrice - entryPrice) * positionSize;
-    } else if (side === 'SHORT') {
-        rawPnl = (entryPrice - exitPrice) * positionSize;
+        rawPnl = exit.minus(entry).times(size);
+    } else {
+        // SHORT
+        rawPnl = entry.minus(exit).times(size);
     }
 
-    // JS floats are dangerous. We round to 4 decimal places for generic safe DB storage.
-    // In future iterations, a decimal.js dependency should govern this logic securely.
-    return Number((rawPnl - fees).toFixed(4));
+    const finalPnl = rawPnl.minus(f);
+
+    // Bounds to standard precision and passes as an exact Javascript primitive number
+    return finalPnl.toDecimalPlaces(CALCULATION_PRECISION).toNumber();
 }
 
 /**
@@ -33,11 +48,17 @@ export function calculateRisk(
     entryPrice: number,
     stopLoss: number
 ): number | null {
+    const entry = new Decimal(entryPrice);
+    const sl = new Decimal(stopLoss);
+
+    let rawRisk: Decimal;
     if (side === 'LONG') {
-        return Math.max(0, entryPrice - stopLoss);
+        rawRisk = Decimal.max(0, entry.minus(sl));
     } else {
-        return Math.max(0, stopLoss - entryPrice);
+        rawRisk = Decimal.max(0, sl.minus(entry));
     }
+
+    return rawRisk.toDecimalPlaces(CALCULATION_PRECISION).toNumber();
 }
 
 /**
@@ -48,15 +69,21 @@ export function calculateReward(
     entryPrice: number,
     takeProfit: number
 ): number | null {
+    const entry = new Decimal(entryPrice);
+    const tp = new Decimal(takeProfit);
+
+    let rawReward: Decimal;
     if (side === 'LONG') {
-        return Math.max(0, takeProfit - entryPrice);
+        rawReward = Decimal.max(0, tp.minus(entry));
     } else {
-        return Math.max(0, entryPrice - takeProfit);
+        rawReward = Decimal.max(0, entry.minus(tp));
     }
+
+    return rawReward.toDecimalPlaces(CALCULATION_PRECISION).toNumber();
 }
 
 /**
- * Determines outcome strictly via deterministic PNL logic.
+ * Determines outcome strictly via deterministic PNL logic evaluated precisely.
  */
 export function determineOutcome(
     pnlRealized: number | null,
@@ -66,10 +93,11 @@ export function determineOutcome(
         return 'OPEN';
     }
 
-    // JS epsilon safe zero check
-    if (Math.abs(pnlRealized) < 0.000001) {
+    const pnl = new Decimal(pnlRealized);
+
+    if (pnl.isZero()) {
         return 'BREAK_EVEN';
     }
 
-    return pnlRealized > 0 ? 'WIN' : 'LOSS';
+    return pnl.isPositive() ? 'WIN' : 'LOSS';
 }
