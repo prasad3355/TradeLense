@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import { healthRouter } from './routes/health';
+import testAuthRouter from './routes/test-auth';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 export function createApp(): Express {
@@ -15,6 +16,9 @@ export function createApp(): Express {
     // Expose foundational /health directly at root, while preserving /api/health alias
     app.use('/', healthRouter);
     app.use('/api', healthRouter);
+
+    // Mount test auth endpoints (demonstrates Auth/AuthZ/Validation stack)
+    app.use('/api/v2/test-auth', testAuthRouter);
 
     // Catch-all 404 for API routes
     app.use('/api/*', notFoundHandler);
