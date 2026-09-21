@@ -45,9 +45,62 @@ Incoming user input is never trusted directly. It's statically bounded via **Zod
 During codebase analysis, legacy references utilizing literal placeholders such as `default-user` and client-submitted `req.body.user_id` insertions were identified (e.g., inside `src/components/SettingsView.tsx` prototype SQL backups and `/legacy/*`). 
 These implementations strictly deviate from V2 specifications and were deliberately quarantined resulting in no local persistence bypassing modern authorization bounds taking effect.
 
+## V2 API Security Contract
+The commercial V2 application strictly enforces the following boundaries:
+
+### User-ID Trust Boundary
+**THE CLIENT NEVER DEFINES DATABASE OWNERSHIP.**
+1. **Never trust** `body.user_id`, `query.user_id`, or `params.user_id` to establish ownership.
+2. The authenticated user ID originates **only** from the validated Supabase Token Context (`req.user.id`).
+3. During Resource Creation, insert operations pull `user_id` from `req.user.id`.
+4. During Resource Fetching/Mutating, `user_id` checks must be passed against `req.user.id` (via `requireOwnership` AND Database RLS).
+
+### Server-Authoritative Fields
+Clients are never authoritative for the following state:
+- `user_id` / `owner_id`
+- Subscription plan / Tier
+- Entitlement state & AI Usage limits / Counters
+- Billing state
+- Audit actor identity and security metadata
+
+### Input Validation Contract (Zod)
+Every endpoint must explicitly implement a `validateRequest()` boundary defining:
+- `body`, `query`, and `params` schemas.
+- **Unknown Field Policy:** Sensitive mutation schemas (POST/PATCH) should strongly prefer Zod's `.strict()` or `.strip()` to prevent unknown fields from reaching the database, implicitly acting as a shield against mass assignment.
+- Clear numeric constraints, string max-lengths, and explicit Enums.
+
+### Safe Error Contract
+The API standardizes error responses universally mapping to consistent statuses:
+- **401**: UNAUTHENTICATED
+- **403**: FORBIDDEN (Auth exists, scope invalid)
+- **404**: NOT_FOUND (Obscures true 403 checks intentionally minimizing resource enumeration)
+- **400**: VALIDATION_ERROR (Client-side rejection)
+- **409**: CONFLICT
+- **429**: RATE_LIMITED
+- **500**: INTERNAL_ERROR (Never leaks stack traces outwards)
+
+### HTTP Method & Idempotency Semantics
+- **GET**: Read Authorized Resources ONLY. (Safe, Idempotent).
+- **POST**: Create Resources. Bound firmly to `req.user.id`.
+- **PATCH**: Modify ONLY owned resources. (Idempotent).
+- **DELETE**: Destroy ONLY owned resources. (Idempotent).
+- **Idempotency Note**: Payment webhooks, expensive AI requests, and specific state transitions must employ idempotency keys in future phases to prevent double-charging or quota bleed.
+
+### Cross-Origin (CORS) & Headers
+- Active security bounding mandates `helmet` usage mitigating simplistic XSS and MIME attacks.
+- **CORS** is strictly environment mapped. It actively rejects fallback wildcards (`*`). Development domains (`localhost`) evaluate against explicitly accepted origins, while Production (`VITE_APP_URL`) strictly enforces locked constraints. 
+
+### Request Logging Contract
+No production system shall log:
+- Authorization headers / Access Tokens / Refresh Tokens
+- Database passwords or Supabase Service-Role keys
+- Sensitive financial payloads unmasked
+- Private generative AI prompts containing user trades
+
 ## Service-Role Rules
 - The `SUPABASE_SERVICE_ROLE_KEY` is fully and absolutely restricted to the backend `.env`. It is NEVER exposed to `src/` bundles.
 - The Service Role client (`getSupabaseAdmin()`) inherently bypasses RLS in DB triggers. Therefore, manual Application-level Authorization rules (`requireOwnership`) must precede DB queries in protected handlers to bridge access control effectively.
 
 ## Testing Limitations
 The current framework lacks integrated unit-testing suites (Vitest/Jest omitted originally) and local Docker environment integration prohibiting runtime e2e execution logic. Authentication context handlers (`test-auth.ts`) were designed strictly to type-check structure matching TS implementations correctly validating dependencies. Integration tests mapping native Supabase logic are marked functionally skipped pending infrastructure execution setup.
+
