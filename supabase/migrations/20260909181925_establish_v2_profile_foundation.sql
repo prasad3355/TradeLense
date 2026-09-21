@@ -28,9 +28,7 @@ CREATE POLICY "Users can update their own profile."
   FOR UPDATE 
   USING (auth.uid() = id);
 
--- Indexes for performance and lookup
--- Primary key handles the uuid index automatically, but if we query by created_at later:
-CREATE INDEX idx_profiles_created_at ON public.profiles (created_at DESC);
+
 
 -- Establish updated_at auto-updating strategy
 CREATE OR REPLACE FUNCTION public.handle_updated_at()
