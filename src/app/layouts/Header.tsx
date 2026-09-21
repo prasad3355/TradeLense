@@ -1,5 +1,6 @@
-import { Menu, Bell } from 'lucide-react';
+import { Menu, Bell, LogOut } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 
 interface HeaderProps {
     onOpenSidebar: () => void;
@@ -8,6 +9,7 @@ interface HeaderProps {
 export function Header({ onOpenSidebar }: HeaderProps) {
     const location = useLocation();
     const currentPath = location.pathname;
+    const { user, signOut } = useAuth();
 
     // Simple title mapping
     let pageTitle = 'Tradelense';
@@ -34,7 +36,6 @@ export function Header({ onOpenSidebar }: HeaderProps) {
             </div>
 
             <div className="flex items-center gap-4">
-                {/* Placeholder for future notifications */}
                 <button
                     className="p-2 text-[#b9cacb] hover:text-white transition-colors relative outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan rounded-full"
                     aria-label="Notifications"
@@ -43,16 +44,25 @@ export function Header({ onOpenSidebar }: HeaderProps) {
                     <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-brand-cyan opacity-80" />
                 </button>
 
-                {/* Placeholder for future user profile/plan badge */}
                 <div className="hidden sm:flex items-center gap-3 pl-4 border-l border-white/10 select-none">
                     <div className="text-right hidden md:block">
-                        <div className="text-xs font-semibold text-white tracking-wide">User Account</div>
+                        <div className="text-xs font-semibold text-white tracking-wide">
+                            {user?.email || 'User Account'}
+                        </div>
                         <div className="text-[10px] text-brand-purple font-mono uppercase tracking-widest font-bold">Pro Plan</div>
                     </div>
-                    <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-xs font-bold text-[#b9cacb]">
-                        U
+                    <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-xs font-bold text-[#b9cacb] overflow-hidden">
+                        {user?.email ? user.email.charAt(0).toUpperCase() : 'U'}
                     </div>
                 </div>
+
+                <button
+                    onClick={signOut}
+                    className="ml-2 p-2 text-[#849495] hover:text-white hover:bg-white/5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan rounded flex items-center gap-2"
+                    title="Sign Out"
+                >
+                    <LogOut className="w-4 h-4" />
+                </button>
             </div>
         </header>
     );

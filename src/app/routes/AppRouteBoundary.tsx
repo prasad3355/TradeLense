@@ -1,15 +1,26 @@
 import { ReactNode } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 
-// ARCITECTURAL PLACEHOLDER
-// This component establishes a clear boundary for authenticated application routes.
-// DO NOT IMPLEMENT AUTHENTICATION YET. The app simply renders the children currently.
-// In the future, this is where Supabase auth check / gate logic goes.
+/**
+ * Tradelense V2 Authenticated Boundary
+ * Protects deep application routes leveraging Supabase session state.
+ */
 export function AppRouteBoundary({ children }: { children: ReactNode }) {
-    // Temporary: No authentication check required yet for V2 framework construction.
-    const isTemporarilyBypassingAuthForV2 = true;
+    const { session, isLoading } = useAuth();
+    const location = useLocation();
 
-    if (!isTemporarilyBypassingAuthForV2) {
-        // throw redirect or render login screen here.
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-black flex items-center justify-center">
+                <div className="w-6 h-6 border-2 border-brand-cyan border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
+    if (!session) {
+        // Safe return destination via state tracking
+        return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
     return <>{children}</>;
