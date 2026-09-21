@@ -55,6 +55,18 @@ Root conceptually mapped as `/api/v1` (with route families):
 `Request` → `Extract Bearer Token` → `Cryptographic Verification` → `Inject { user_id } to Request Context`.
 Fails instantly on invalid tokens (401). Prevents unauthorized entry to protected routes. **Never** trusts a client-provided `user_id` in a JSON request body.
 
+---
+
+## 6b. Domain Extrapolation & Business Validation (V2 Addition)
+Before mutating internal data, APIs execute pure Domain validations mapping strictly against documented parameters.
+Reference: [`TRADE_DOMAIN_RULES.md`](./TRADE_DOMAIN_RULES.md)
+
+* **Payload Stripping:** Unseen arguments evaluating false assertions (`pnl_realized`, `outcome`) natively vanish statically utilizing Zod `.strict()`.
+* **Geometry Validation:** Chronological bounds (`entry_timestamp < exit_timestamp`) and Spatial definitions (`SL` vs `Entry`) evaluate logically averting database pollution seamlessly.
+* **Deterministic Server Calculation:** Endpoints derive calculations generating outputs structurally without client interference securely guaranteeing output boundaries seamlessly.
+
+---
+
 ## 7. Authorization Middleware
 `Authenticated user` → Evaluate ownership of `/:id` param → `Role/Permission` → `Entitlement check` → `Route Allowed`.
 Distinct from Authentication: A valid JWT doesn't grant the right to edit a trade they don't own. 
