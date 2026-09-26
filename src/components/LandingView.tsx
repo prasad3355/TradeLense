@@ -1,6 +1,12 @@
+import { useRef } from "react";
+import { useLandingAnimations } from "../hooks/useLandingAnimations";
+
 export default function LandingView({ onStartPro }: { onStartPro: () => void }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  useLandingAnimations(containerRef);
+
   return (
-    <div className="bg-obsidian-900 text-slate-400 antialiased relative selection:bg-cyan-glow selection:text-black">
+    <div className="bg-obsidian-900 text-slate-400 antialiased relative selection:bg-cyan-glow selection:text-black" ref={containerRef}>
       {/* Ambient Top Aurora Glow */}
       <div
         aria-hidden="true"
@@ -8,7 +14,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
       ></div>
 
       {/* MainHeader */}
-      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-obsidian-900/80 backdrop-blur-xl transition-all">
+      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-obsidian-900/80 backdrop-blur-xl transition-all" data-animation="navbar">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
           <a aria-label="TRADELENSE OS Homepage" className="flex items-center gap-2.5 group" href="#">
             <div className="w-8 h-8 rounded-lg bg-obsidian-800 border border-white/10 flex items-center justify-center text-cyan-glow group-hover:border-cyan-glow/40 transition-colors">
@@ -67,11 +73,11 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
       {/* HeroSection */}
       <section className="relative pt-20 pb-28 md:pt-28 md:pb-36 px-4 sm:px-6 lg:px-8 text-center bg-cyber-grid">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.08] mb-6">
+          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.08] mb-6" data-animation="hero-heading">
             <span className="text-cream block">Your AI Trading</span>
             <span className="text-tradelense-gradient block mt-1">Journal OS</span>
           </h1>
-          <p className="max-w-2xl text-base sm:text-lg md:text-xl text-slate-400 font-normal leading-relaxed mb-10">
+          <p className="max-w-2xl text-base sm:text-lg md:text-xl text-slate-400 font-normal leading-relaxed mb-10" data-animation="hero-subtitle">
             AI-powered trade journaling, psychology tracking, and performance analytics designed to help traders improve consistency and execution.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto" data-purpose="hero-actions">
@@ -82,7 +88,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
               Explore Features
             </a>
           </div>
-          <div className="mt-16 pt-8 border-t border-white/[0.06] w-full flex flex-wrap items-center justify-center gap-y-3 gap-x-8 text-xs font-mono text-slate-400 uppercase tracking-wider">
+          <div className="mt-16 pt-8 border-t border-white/[0.06] w-full flex flex-wrap items-center justify-center gap-y-3 gap-x-8 text-xs font-mono text-slate-400 uppercase tracking-wider" data-animation="hero-trust">
             <span className="flex items-center gap-1.5"><strong className="text-cream">2.4M+</strong> Trades Journaled</span>
             <span className="text-white/20 hidden sm:inline">•</span>
             <span className="flex items-center gap-1.5"><strong className="text-cream">8,500+</strong> Active Traders</span>
@@ -110,7 +116,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
               Tradelense turns every execution ticket into structured metrics, measurable psychology, and institutional-grade telemetry.
             </p>
           </div>
-          
+
           <div className="rounded-2xl border border-white/10 bg-obsidian-850 shadow-2xl overflow-hidden" data-purpose="os-dashboard-window">
             <div className="bg-obsidian-800 px-4 py-3 border-b border-white/[0.08] flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -124,7 +130,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
                 <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10">June 2024</span>
               </div>
             </div>
-            
+
             <div className="p-4 sm:p-6 lg:p-8 space-y-6">
               {/* Top Telemetry KPI Bar */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -367,7 +373,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" data-purpose="4-pillar-features" id="features">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Card 1: Advanced AI OCR Scanner (Col 7) */}
-          <div className="lg:col-span-7 card-glass p-8 rounded-2xl relative overflow-hidden card-glass-hover">
+          <div className="lg:col-span-7 card-glass p-8 rounded-2xl relative overflow-hidden card-glass-hover" data-animation="feature-card">
             <div className="w-12 h-12 rounded-xl bg-cyan-glow/10 border border-cyan-glow/30 flex items-center justify-center text-cyan-glow mb-6">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.04"></path>
@@ -397,7 +403,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
           </div>
 
           {/* Card 2: Trading Psychology Insights (Col 5) */}
-          <div className="lg:col-span-5 card-glass p-8 rounded-2xl relative overflow-hidden card-glass-hover flex flex-col justify-between">
+          <div className="lg:col-span-5 card-glass p-8 rounded-2xl relative overflow-hidden card-glass-hover flex flex-col justify-between" data-animation="feature-card">
             <div className="w-12 h-12 rounded-xl bg-cyan-glow/10 border border-cyan-glow/30 flex items-center justify-center text-cyan-bright mb-6 shadow-[0_0_15px_rgba(0,213,213,0.15)]">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
             </div>
@@ -449,7 +455,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
           </div>
 
           {/* Card 3: Risk Shield & Safety (Col 5) */}
-          <div className="lg:col-span-5 card-glass p-8 rounded-2xl relative overflow-hidden card-glass-hover">
+          <div className="lg:col-span-5 card-glass p-8 rounded-2xl relative overflow-hidden card-glass-hover" data-animation="feature-card">
             <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-6">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -462,7 +468,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
           </div>
 
           {/* Card 4: Trade Replay & Review with Embedded Terminal (Col 7) */}
-          <div className="lg:col-span-7 card-glass p-8 rounded-2xl relative overflow-hidden card-glass-hover flex flex-col justify-between">
+          <div className="lg:col-span-7 card-glass p-8 rounded-2xl relative overflow-hidden card-glass-hover flex flex-col justify-between" data-animation="feature-card">
             <div>
               <div className="w-12 h-12 rounded-xl bg-cyan-glow/10 border border-cyan-glow/30 flex items-center justify-center text-cyan-glow mb-6">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -500,7 +506,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
       {/* AdvancedTradingAnalyticsSection */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 border-y border-white/[0.06] bg-obsidian-950 relative" id="analytics">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-16" data-animation="analytics-title">
             <h2 className="text-4xl sm:text-5xl font-extrabold text-cream tracking-tight mb-4">
               Advanced Trading Analytics
             </h2>
@@ -508,7 +514,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
               A sleek, high-density visualization tracker designed to optimize your trading consistency and analysis without complexity.
             </p>
           </div>
-          
+
           <div className="rounded-2xl border border-white/10 bg-obsidian-850 shadow-2xl overflow-hidden max-w-5xl mx-auto" data-purpose="analytics-hud">
             <div className="bg-obsidian-800 px-4 py-3 border-b border-white/[0.08] flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -519,7 +525,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
               <span className="text-xs font-mono text-slate-400 tracking-widest uppercase">TRADELENSE_OS_SECURE_V2.4</span>
               <div className="w-12"></div>
             </div>
-            
+
             <div className="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="p-5 rounded-xl bg-obsidian-800/40 border border-white/[0.06] flex flex-col justify-between">
                 <div>
@@ -532,7 +538,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
                   </svg>
                 </div>
               </div>
-              
+
               <div className="p-5 rounded-xl bg-obsidian-800/40 border border-white/[0.06] flex flex-col justify-between">
                 <div>
                   <span className="text-[11px] font-mono tracking-wider text-slate-400 uppercase">COGNITIVE SUMMARY</span>
@@ -546,7 +552,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
                   </span>
                 </div>
               </div>
-              
+
               <div className="p-5 rounded-xl bg-obsidian-800/40 border border-white/[0.06] flex flex-col justify-between">
                 <div>
                   <span className="text-[11px] font-mono tracking-wider text-softPink uppercase">AI CO-PILOT ADVISORY</span>
@@ -569,7 +575,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" id="ai-coach">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Interactive Chat Interface */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7" data-animation="ai-chat">
             <div className="card-glass rounded-2xl border border-white/10 shadow-2xl p-6 sm:p-8 relative">
               <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
                 <div className="flex items-center gap-3">
@@ -583,7 +589,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
                 </div>
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
               </div>
-              
+
               {/* Message Bubbles Stream */}
               <div className="space-y-4 font-sans text-sm">
                 <div className="flex justify-end">
@@ -591,7 +597,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
                     Why did I lose money last week?
                   </div>
                 </div>
-                
+
                 <div className="flex justify-start">
                   <div className="bg-cyan-glow/[0.08] text-slate-200 px-4 py-3.5 rounded-2xl rounded-tl-none border border-cyan-glow/20 max-w-lg space-y-2">
                     <p>
@@ -602,13 +608,13 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex justify-end">
                   <div className="bg-obsidian-750 text-cream px-4 py-3 rounded-2xl rounded-tr-none border border-white/10 max-w-md">
                     What rule adjustment will fix this?
                   </div>
                 </div>
-                
+
                 <div className="flex justify-start">
                   <div className="bg-cyan-glow/[0.08] text-slate-200 px-4 py-3.5 rounded-2xl rounded-tl-none border border-cyan-glow/20 max-w-lg space-y-1">
                     <p>
@@ -620,7 +626,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
                   </div>
                 </div>
               </div>
-              
+
               {/* Simulated Prompt Input */}
               <div className="mt-6 pt-4 border-t border-white/10 flex items-center gap-3">
                 <div className="flex-1 bg-obsidian-850 px-4 py-3 rounded-xl border border-white/10 text-xs font-mono text-slate-400 flex items-center justify-between">
@@ -633,9 +639,9 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
               </div>
             </div>
           </div>
-          
+
           {/* Right Column: Editorial & Pattern Intelligence Cards */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-6" data-animation="ai-content">
             <div>
               <span className="text-xs font-mono text-cyan-glow uppercase tracking-widest">03 — BEHAVIOR &amp; AI COACH</span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-cream tracking-tight mt-2 mb-4">
@@ -645,7 +651,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
                 AI Coach analyzes patterns directly from your historical executions to highlight hidden blind spots, psychological friction, and execution leaks.
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
               <div className="p-4 rounded-xl card-glass">
                 <span className="text-[10px] font-mono uppercase text-rose-400 font-bold">TIME-OF-DAY LEAK</span>
@@ -680,10 +686,10 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
               From trade screenshot to actionable behavioral edge in seconds.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Step 1 */}
-            <div className="card-glass p-6 rounded-2xl relative border border-white/5 border-t-2 border-t-cyan-glow shadow-[0_0_20px_rgba(0,213,213,0.06)] hover:border-cyan-glow/30 transition-all duration-200 group">
+            <div className="card-glass p-6 rounded-2xl relative border border-white/5 border-t-2 border-t-cyan-glow shadow-[0_0_20px_rgba(0,213,213,0.06)] hover:border-cyan-glow/30 transition-all duration-200 group" data-animation="workflow-item">
               <div className="text-3xl font-black font-mono bg-gradient-to-br from-[#00F0FF]/80 to-[#8B5CF6]/50 text-transparent bg-clip-text mb-3">01</div>
               <h3 className="text-lg font-bold text-cream mb-2 tracking-wide group-hover:text-cyan-bright transition-colors">CAPTURE</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
@@ -691,7 +697,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
               </p>
             </div>
             {/* Step 2 */}
-            <div className="card-glass p-6 rounded-2xl relative border border-white/5 border-t-2 border-t-cyan-glow shadow-[0_0_20px_rgba(0,213,213,0.06)] hover:border-cyan-glow/30 transition-all duration-200 group">
+            <div className="card-glass p-6 rounded-2xl relative border border-white/5 border-t-2 border-t-cyan-glow shadow-[0_0_20px_rgba(0,213,213,0.06)] hover:border-cyan-glow/30 transition-all duration-200 group" data-animation="workflow-item">
               <div className="text-3xl font-black font-mono bg-gradient-to-br from-[#00F0FF]/80 to-[#A855F7]/50 text-transparent bg-clip-text mb-3">02</div>
               <h3 className="text-lg font-bold text-cream mb-2 tracking-wide group-hover:text-cyan-bright transition-colors">EXTRACT</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
@@ -699,7 +705,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
               </p>
             </div>
             {/* Step 3 */}
-            <div className="card-glass p-6 rounded-2xl relative border border-white/5 border-t-2 border-t-electricViolet shadow-[0_0_20px_rgba(124,58,237,0.08)] hover:border-purple-500/30 transition-all duration-200 group">
+            <div className="card-glass p-6 rounded-2xl relative border border-white/5 border-t-2 border-t-electricViolet shadow-[0_0_20px_rgba(124,58,237,0.08)] hover:border-purple-500/30 transition-all duration-200 group" data-animation="workflow-item">
               <div className="text-3xl font-black font-mono bg-gradient-to-br from-[#8B5CF6]/90 to-[#C084FC]/60 text-transparent bg-clip-text mb-3">03</div>
               <h3 className="text-lg font-bold text-cream mb-2 tracking-wide group-hover:text-purple-400 transition-colors">REVIEW</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
@@ -707,7 +713,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
               </p>
             </div>
             {/* Step 4 */}
-            <div className="card-glass p-6 rounded-2xl relative border border-white/5 border-t-2 border-t-electricViolet shadow-[0_0_20px_rgba(124,58,237,0.08)] hover:border-purple-500/30 transition-all duration-200 group">
+            <div className="card-glass p-6 rounded-2xl relative border border-white/5 border-t-2 border-t-electricViolet shadow-[0_0_20px_rgba(124,58,237,0.08)] hover:border-purple-500/30 transition-all duration-200 group" data-animation="workflow-item">
               <div className="text-3xl font-black font-mono bg-gradient-to-br from-[#A855F7]/90 to-[#E6A7DE]/60 text-transparent bg-clip-text mb-3">04</div>
               <h3 className="text-lg font-bold text-cream mb-2 tracking-wide group-hover:text-purple-400 transition-colors">ANALYZE</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
@@ -720,7 +726,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
 
       {/* PricingSection */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" id="pricing">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16" data-animation="pricing-heading">
           <span className="text-xs font-mono uppercase tracking-widest font-bold bg-gradient-to-r from-[#00F0FF] via-[#A855F7] to-[#C084FC] text-transparent bg-clip-text">TRANSPARENT PLANS</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-cream tracking-tight mt-2 mb-4">
             Predictable pricing for dedicated traders.
@@ -731,61 +737,64 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
           {/* Free Plan */}
-          <div className="card-glass p-8 rounded-2xl flex flex-col justify-between">
+          <div className="card-glass p-8 rounded-2xl flex flex-col justify-between" data-animation="pricing-card">
             <div>
-              <div className="text-sm font-mono uppercase text-slate-400">Free Trader</div>
-              <div className="mt-4 flex items-baseline gap-1">
+              <div className="text-sm font-mono uppercase text-slate-400" data-pricing-element="title">Free Trader</div>
+              <div className="mt-4 flex items-baseline gap-1" data-pricing-element="price">
                 <span className="text-4xl font-extrabold text-cream">$0</span>
                 <span className="text-xs font-mono uppercase tracking-widest font-bold bg-gradient-to-r from-[#00F0FF] via-[#A855F7] to-[#C084FC] text-transparent bg-clip-text">TRANSPARENT PLANS</span>
               </div>
-              <p className="text-xs text-slate-400 mt-2">Essential trade recording for new prop firm applicants.</p>
+              <p className="text-xs text-slate-400 mt-2" data-pricing-element="desc">Essential trade recording for new prop firm applicants.</p>
               <ul className="mt-8 space-y-3 text-xs text-slate-300 font-sans">
-                <li className="flex items-center gap-2"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Up to 50 trades / month</li>
-                <li className="flex items-center gap-2"><svg className="w-4 h-4 text-[#A855F7] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Basic Trading Calendar</li>
-                <li className="flex items-center gap-2"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Standard P&amp;L Metrics</li>
+                <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Up to 50 trades / month</li>
+                <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#A855F7] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Basic Trading Calendar</li>
+                <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Standard P&amp;L Metrics</li>
               </ul>
             </div>
-            <a className="mt-8 w-full py-3 rounded-xl border border-white/10 hover:border-white/30 text-cream text-xs font-bold uppercase tracking-wider text-center block transition-colors" href="#dashboard">
+            <a data-pricing-element="cta" className="mt-8 w-full py-3 rounded-xl border border-white/10 hover:border-white/30 text-cream text-xs font-bold uppercase tracking-wider text-center block transition-colors" href="#dashboard">
               Start Free
             </a>
           </div>
           {/* Pro Plan */}
-          <div className="card-glass p-8 rounded-2xl border-2 border-cyan-glow relative flex flex-col justify-between cyan-glow-sm bg-obsidian-850" style={{borderColor: 'rgb(139, 92, 246)', boxShadow: 'rgba(168, 85, 247, 0.3) 0px 0px 35px -5px, rgba(0, 240, 255, 0.25) 0px 0px 20px -5px'}}>
-            <span className="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-gradient-to-r from-[#00F0FF] to-[#A855F7] text-white font-mono font-bold text-[10px] tracking-widest uppercase shadow-lg shadow-purple-500/20">MOST POPULAR</span>
+          <div className="card-glass p-8 rounded-2xl border-2 border-cyan-glow relative flex flex-col justify-between cyan-glow-sm bg-obsidian-850" data-animation="pricing-card" style={{ borderColor: 'rgb(139, 92, 246)', boxShadow: 'rgba(168, 85, 247, 0.3) 0px 0px 35px -5px, rgba(0, 240, 255, 0.25) 0px 0px 20px -5px' }}>
+            <div data-pricing-element="sweep" className="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden z-10" style={{ opacity: 0 }}>
+              <div data-pricing-element="sweep-inner" className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            </div>
+            <span data-pricing-element="badge" className="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-gradient-to-r from-[#00F0FF] to-[#A855F7] text-white font-mono font-bold text-[10px] tracking-widest uppercase shadow-lg shadow-purple-500/20">MOST POPULAR</span>
             <div>
-              <div className="text-sm font-mono uppercase font-bold bg-gradient-to-r from-[#00F0FF] to-[#C084FC] text-transparent bg-clip-text">Pro Journaler</div>
-              <div className="mt-4 flex items-baseline gap-1">
+              <div className="text-sm font-mono uppercase font-bold bg-gradient-to-r from-[#00F0FF] to-[#C084FC] text-transparent bg-clip-text" data-pricing-element="title">Pro Journaler</div>
+              <div className="mt-4 flex items-baseline gap-1" data-pricing-element="price">
                 <span className="text-4xl font-extrabold text-cream">$29</span>
                 <span className="text-xs font-mono uppercase tracking-widest font-bold bg-gradient-to-r from-[#00F0FF] via-[#A855F7] to-[#C084FC] text-transparent bg-clip-text">TRANSPARENT PLANS</span>
               </div>
-              <p className="text-xs text-slate-400 mt-2">Complete behavioral OS for prop and retail funded traders.</p>
+              <p className="text-xs text-slate-400 mt-2" data-pricing-element="desc">Complete behavioral OS for prop and retail funded traders.</p>
               <ul className="mt-8 space-y-3 text-xs text-slate-200 font-sans">
-                <li className="flex items-center gap-2"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Unlimited trade imports &amp; broker sync</li>
-                <li className="flex items-center gap-2"><svg className="w-4 h-4 text-[#A855F7] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Neural OCR Visual Scanner</li>
-                <li className="flex items-center gap-2"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> AI Behavioral Coach &amp; Revenge Warning</li>
-                <li className="flex items-center gap-2"><svg className="w-4 h-4 text-[#A855F7] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Multi-axis Spider / Radar Consistency Score</li>
-                <li className="flex items-center gap-2"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Trade Sandbox Replay Terminal</li>
+                <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Unlimited trade imports &amp; broker sync</li>
+                <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#A855F7] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Neural OCR Visual Scanner</li>
+                <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> AI Behavioral Coach &amp; Revenge Warning</li>
+                <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#A855F7] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Multi-axis Spider / Radar Consistency Score</li>
+                <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Trade Sandbox Replay Terminal</li>
               </ul>
             </div>
-            <a className="mt-8 w-full py-3.5 rounded-xl bg-gradient-to-r from-[#00F0FF] via-[#8B5CF6] to-[#A855F7] text-white text-xs font-bold font-mono uppercase tracking-wider text-center block shadow-lg shadow-purple-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all" href="#dashboard">Get Started Pro</a>
+            <a data-pricing-element="cta" className="mt-8 w-full py-3.5 rounded-xl bg-gradient-to-r from-[#00F0FF] via-[#8B5CF6] to-[#A855F7] text-white text-xs font-bold font-mono uppercase tracking-wider text-center block shadow-lg shadow-purple-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all" href="#dashboard">Get Started Pro</a>
           </div>
           {/* Elite Firm Plan */}
-          <div className="card-glass p-8 rounded-2xl flex flex-col justify-between">
+          <div className="card-glass p-8 rounded-2xl flex flex-col justify-between" data-animation="pricing-card">
             <div>
-              <div className="text-sm font-mono uppercase text-slate-400">Elite / Desk</div>
-              <div className="mt-4 flex items-baseline gap-1">
+              <div className="text-sm font-mono uppercase text-slate-400" data-pricing-element="title">Elite / Desk</div>
+              <div className="mt-4 flex items-baseline gap-1" data-pricing-element="price">
                 <span className="text-4xl font-extrabold text-cream">$79</span>
                 <span className="text-xs font-mono uppercase tracking-widest font-bold bg-gradient-to-r from-[#00F0FF] via-[#A855F7] to-[#C084FC] text-transparent bg-clip-text">TRANSPARENT PLANS</span>
               </div>
-              <p className="text-xs text-slate-400 mt-2">Multi-account telemetry for high-volume traders &amp; mentors.</p>
+              <p className="text-xs text-slate-400 mt-2" data-pricing-element="desc">Multi-account telemetry for high-volume traders &amp; mentors.</p>
               <ul className="mt-8 space-y-3 text-xs text-slate-300 font-sans">
-                <li className="flex items-center gap-2"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> All Pro Features Included</li>
-                <li className="flex items-center gap-2"><svg className="w-4 h-4 text-[#A855F7] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Up to 10 Sub-accounts / Desks</li>
-                <li className="flex items-center gap-2"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Custom Risk Limits with Webhook Trigger</li>
-                <li className="flex items-center gap-2"><svg className="w-4 h-4 text-[#A855F7] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Priority Telemetry Stream</li>
+                <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> All Pro Features Included</li>
+                <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#A855F7] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Up to 10 Sub-accounts / Desks</li>
+                <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Custom Risk Limits with Webhook Trigger</li>
+                <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#A855F7] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Priority Telemetry Stream</li>
               </ul>
             </div>
-            <a className="mt-8 w-full py-3 rounded-xl border border-white/10 hover:border-white/30 text-cream text-xs font-bold uppercase tracking-wider text-center block transition-colors" href="#dashboard">
+            <a data-pricing-element="cta" className="mt-8 w-full py-3 rounded-xl border border-white/10 hover:border-white/30 text-cream text-xs font-bold uppercase tracking-wider text-center block transition-colors" href="#dashboard">
               Contact Desk Sales
             </a>
           </div>
@@ -794,15 +803,15 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
 
       {/* FinalCTASection */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 border-t border-white/[0.06] bg-gradient-to-b from-obsidian-900 to-obsidian-950 text-center relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-glow/10 rounded-full blur-[100px] pointer-events-none" style={{background: 'radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, rgba(0, 240, 255, 0.12) 60%, transparent 100%)'}}></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-glow/10 rounded-full blur-[100px] pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, rgba(0, 240, 255, 0.12) 60%, transparent 100%)' }}></div>
         <div className="max-w-4xl mx-auto relative z-10">
-          <h2 className="text-4xl sm:text-6xl font-extrabold text-cream tracking-tight mb-4">
+          <h2 className="text-4xl sm:text-6xl font-extrabold text-cream tracking-tight mb-4" data-animation="cta-heading">
             Build a better trading process.
           </h2>
-          <p className="max-w-xl mx-auto text-base sm:text-lg text-slate-400 mb-10">
+          <p className="max-w-xl mx-auto text-base sm:text-lg text-slate-400 mb-10" data-animation="cta-subtitle">
             Journal every trade. Understand your performance. Eliminate unforced psychological errors.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4" data-animation="cta-actions">
             <a className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#00F0FF] via-[#8B5CF6] to-[#A855F7] hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-purple-500/20 transition-all duration-200" href="#dashboard">Get Started Free</a>
             <a className="w-full sm:w-auto px-8 py-4 rounded-xl font-medium text-sm text-cream bg-obsidian-800 border border-white/10 hover:border-white/20 transition-all duration-200" href="#features">
               Explore Tradelense OS
