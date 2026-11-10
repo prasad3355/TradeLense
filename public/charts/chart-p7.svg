@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="320" height="160">
+  <rect width="320" height="160" fill="#0E0E14"/>
+  <!-- Grid -->
+  <line x1="0" y1="40" x2="320" y2="40" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="0" y1="80" x2="320" y2="80" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="0" y1="120" x2="320" y2="120" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="80" y1="0" x2="80" y2="160" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="160" y1="0" x2="160" y2="160" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="240" y1="0" x2="240" y2="160" stroke="#1A1A24" stroke-width="1"/>
+  <!-- EURUSD Liquidity Grab — long spike reset, massive bullish resolution -->
+  <!-- Build up bearish pressure -->
+  <line x1="10" y1="60" x2="10" y2="88" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="5" y="64" width="10" height="20" rx="1" fill="#EF4444" opacity="0.65"/>
+  <line x1="26" y1="68" x2="26" y2="94" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="21" y="72" width="10" height="18" rx="1" fill="#EF4444" stroke="#EF4444" opacity="0.65"/>
+  <line x1="42" y1="74" x2="42" y2="100" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="37" y="78" width="10" height="18" rx="1" fill="#EF4444" opacity="0.7"/>
+  <!-- Liquidity grab spike — long wick below -->
+  <line x1="65" y1="112" x2="65" y2="60" stroke="#60c0ff" stroke-width="2"/>
+  <rect x="60" y="72" width="10" height="24" rx="1" fill="#EF4444" opacity="0.8"/>
+  <!-- Reversal explosion -->
+  <line x1="83" y1="65" x2="83" y2="38" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="78" y="40" width="10" height="22" rx="1" fill="#34D399" opacity="0.9"/>
+  <line x1="99" y1="44" x2="99" y2="22" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="94" y="26" width="10" height="16" rx="1" fill="#34D399" opacity="0.95"/>
+  <line x1="115" y1="28" x2="115" y2="12" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="110" y="14" width="10" height="12" rx="1" fill="#34D399" opacity="0.92"/>
+  <line x1="131" y1="16" x2="131" y2="6" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="126" y="8" width="10" height="8" rx="1" fill="#34D399" opacity="0.9"/>
+  <line x1="147" y1="10" x2="147" y2="4" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="142" y="6" width="10" height="6" rx="1" fill="#34D399" opacity="0.88"/>
+  <!-- Low sweep marker -->
+  <line x1="0" y1="115" x2="180" y2="115" stroke="#60c0ff" stroke-dasharray="4,3" stroke-width="0.8" stroke-opacity="0.35"/>
+  <text x="185" y="119" font-family="'JetBrains Mono', monospace" font-size="8" fill="#60c0ff" opacity="0.45">Buy-side Liq.</text>
+  <defs>
+    <linearGradient id="g7" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#60c0ff" stop-opacity="0.4"/>
+      <stop offset="40%" stop-color="#8B5CF6" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#34D399" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="glow7">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <path d="M 62 112 C 72 90, 82 62, 100 38 S 125 14, 155 5" fill="none" stroke="url(#g7)" stroke-width="2" stroke-linecap="round" filter="url(#glow7)"/>
+  <circle cx="155" cy="5" r="3.5" fill="#34D399" opacity="0.9"/>
+  <circle cx="155" cy="5" r="6" fill="#34D399" opacity="0.15"/>
+  <text x="10" y="155" font-family="'JetBrains Mono', monospace" font-size="9" fill="#34D399" opacity="0.6">EURUSD · LONG · H1</text>
+  <text x="230" y="155" font-family="'JetBrains Mono', monospace" font-size="9" fill="#34D399" opacity="0.5">+4.2R</text>
+</svg>

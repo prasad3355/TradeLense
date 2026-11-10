@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="320" height="160">
+  <rect width="320" height="160" fill="#0E0E14"/>
+  <!-- Grid -->
+  <line x1="0" y1="40" x2="320" y2="40" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="0" y1="80" x2="320" y2="80" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="0" y1="120" x2="320" y2="120" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="80" y1="0" x2="80" y2="160" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="160" y1="0" x2="160" y2="160" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="240" y1="0" x2="240" y2="160" stroke="#1A1A24" stroke-width="1"/>
+  <!-- NAS100 Mean Reversion SHORT — overbought flush -->
+  <!-- Extended bullish run -->
+  <line x1="10" y1="100" x2="10" y2="72" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="5" y="76" width="10" height="22" rx="1" fill="#34D399" opacity="0.65"/>
+  <line x1="26" y1="82" x2="26" y2="55" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="21" y="60" width="10" height="20" rx="1" fill="#34D399" opacity="0.7"/>
+  <line x1="42" y1="62" x2="42" y2="38" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="37" y="42" width="10" height="18" rx="1" fill="#34D399" opacity="0.72"/>
+  <line x1="58" y1="45" x2="58" y2="24" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="53" y="28" width="10" height="15" rx="1" fill="#34D399" opacity="0.7"/>
+  <!-- Exhaustion doji -->
+  <line x1="76" y1="18" x2="76" y2="42" stroke="#8B99CC" stroke-width="1.5"/>
+  <rect x="71" y="24" width="10" height="12" rx="1" fill="#EF4444" opacity="0.7"/>
+  <!-- Reversal flush -->
+  <line x1="92" y1="30" x2="92" y2="58" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="87" y="34" width="10" height="20" rx="1" fill="#EF4444" opacity="0.82"/>
+  <line x1="108" y1="45" x2="108" y2="74" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="103" y="50" width="10" height="20" rx="1" fill="#EF4444" opacity="0.88"/>
+  <line x1="124" y1="58" x2="124" y2="86" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="119" y="62" width="10" height="20" rx="1" fill="#EF4444" opacity="0.9"/>
+  <line x1="140" y1="68" x2="140" y2="94" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="135" y="72" width="10" height="18" rx="1" fill="#EF4444" opacity="0.85"/>
+  <line x1="156" y1="76" x2="156" y2="100" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="151" y="80" width="10" height="16" rx="1" fill="#EF4444" opacity="0.82"/>
+  <!-- Overbought level -->
+  <line x1="0" y1="22" x2="200" y2="22" stroke="#F59E0B" stroke-dasharray="4,3" stroke-width="0.9" stroke-opacity="0.4"/>
+  <text x="205" y="26" font-family="'JetBrains Mono', monospace" font-size="8" fill="#F59E0B" opacity="0.45">OB Level</text>
+  <defs>
+    <linearGradient id="g8" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F87171" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#EF4444" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="glow8">
+      <feGaussianBlur stdDeviation="1.8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Short profit as price falls -->
+  <path d="M 74 20 C 88 35, 106 52, 126 68 S 150 82, 170 92" fill="none" stroke="url(#g8)" stroke-width="1.8" stroke-linecap="round" filter="url(#glow8)"/>
+  <circle cx="170" cy="92" r="3.5" fill="#EF4444" opacity="0.9"/>
+  <circle cx="170" cy="92" r="6" fill="#EF4444" opacity="0.15"/>
+  <text x="10" y="155" font-family="'JetBrains Mono', monospace" font-size="9" fill="#EF4444" opacity="0.6">NAS100 · SHORT · M15</text>
+  <text x="225" y="155" font-family="'JetBrains Mono', monospace" font-size="9" fill="#EF4444" opacity="0.5">-1.2R</text>
+</svg>

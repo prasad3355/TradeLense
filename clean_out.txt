@@ -1,0 +1,38 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv5.0.2 [39m[90mD:/Trade_Lense[39m
+
+ [31m❯[39m tests/trades.test.ts [2m([22m[2m21 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 128[2mms[22m[39m
+   [31m❯[39m Trade API Lifecycle [2m(21)[22m
+     [32m✓[39m POST /api/trades [2m(5)[22m
+       [32m✓[39m should fail if unauthenticated[32m 31[2mms[22m[39m
+       [32m✓[39m should fail with invalid payload[32m 8[2mms[22m[39m
+       [32m✓[39m should succeed, derive user_id, and calculate pnl for a LONG trade[32m 6[2mms[22m[39m
+       [32m✓[39m should succeed, calculate pnl for a SHORT trade[32m 4[2mms[22m[39m
+       [32m✓[39m client cannot override user_id[32m 5[2mms[22m[39m
+     [32m✓[39m GET /api/trades [2m(4)[22m
+       [32m✓[39m should fail if unauthenticated[32m 4[2mms[22m[39m
+       [32m✓[39m should succeed with only authenticated user trades returning paginated output[32m 5[2mms[22m[39m
+       [32m✓[39m should successfully pass filters, sorting, and pagination down to repo[32m 3[2mms[22m[39m
+       [32m✓[39m invalid query parameters fail[32m 5[2mms[22m[39m
+     [32m✓[39m GET /api/trades/:id [2m(3)[22m
+       [32m✓[39m should fail if unauthenticated[32m 3[2mms[22m[39m
+       [32m✓[39m should return trade if owner[32m 3[2mms[22m[39m
+       [32m✓[39m should return 404/reject if trade requested by non-owner (or does not exist)[32m 3[2mms[22m[39m
+     [31m❯[39m PATCH /api/trades/:id [2m(3)[22m
+       [32m✓[39m owner can update allowed fields, recalculates derivations[32m 6[2mms[22m[39m
+       [32m✓[39m unauthorized user cannot update another user trade[32m 3[2mms[22m[39m
+[31m       [31m×[31m protected user_id cannot be changed via PATCH[39m[32m 9[2mms[22m[39m
+     [32m✓[39m DELETE /api/trades/:id [2m(3)[22m
+       [32m✓[39m unauthenticated request fails[32m 5[2mms[22m[39m
+       [32m✓[39m owner can delete[32m 7[2mms[22m[39m
+       [32m✓[39m unauthorized user cannot delete another user trade[32m 3[2mms[22m[39m
+     [31m❯[39m SECURITY: Ownership Isolation [2m(3)[22m
+[31m       [31m×[31m User B cannot GET User A trade[39m[32m 4[2mms[22m[39m
+       [32m✓[39m User B cannot PATCH User A trade[32m 4[2mms[22m[39m
+       [32m✓[39m User B cannot DELETE User A trade[32m 3[2mms[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m19 passed[39m[22m[90m (21)[39m
+[2m   Start at [22m 16:59:31
+[2m   Duration [22m 737ms[2m (import 47%, transform 30%, tests 22%, worker 1%)[22m
+

@@ -41,6 +41,40 @@ export const CreateTradeInput = TradeBaseSchema.strict();
  */
 export const UpdateTradeInput = TradeBaseSchema.partial().strict();
 
+/**
+ * CLIENT SUPPLIED: Get Trades Collection Query
+ * Strict bounded query parameters for deterministic fetching.
+ */
+export const GetTradesQueryInput = z.object({
+    page: z.coerce.number().int().min(1).default(1),
+    pageSize: z.coerce.number().int().min(1).max(100).default(20),
+
+    // Filters
+    symbol: z.string().toUpperCase().optional(),
+    side: SideEnum.optional(),
+    outcome: z.enum(['WIN', 'LOSS', 'BREAK_EVEN']).optional(),
+    status: z.enum(['OPEN', 'CLOSED']).optional(),
+
+    // Date bounds (ISO 8601 UTC)
+    from: z.string().datetime().optional(),
+    to: z.string().datetime().optional(),
+
+    // Sorting
+    sortBy: z.enum(['created_at', 'entry_timestamp', 'exit_timestamp', 'symbol', 'pnl_realized', 'outcome']).default('created_at'),
+    sortOrder: z.enum(['asc', 'desc']).default('desc')
+}).superRefine((data, ctx) => {
+    if (data.from && data.to) {
+        if (new Date(data.from) > new Date(data.to)) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "'from' date must be before or equal to 'to' date",
+                path: ['from']
+            });
+        }
+    }
+});
+
 // Infer types
 export type CreateTradePayload = z.infer<typeof CreateTradeInput>;
 export type UpdateTradePayload = z.infer<typeof UpdateTradeInput>;
+export type GetTradesQueryPayload = z.infer<typeof GetTradesQueryInput>;

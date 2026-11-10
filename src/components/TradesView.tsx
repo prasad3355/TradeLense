@@ -1,13 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { Trade } from '../types';
-import { 
-  Upload, 
-  FileImage, 
-  CheckCircle2, 
-  TrendingUp, 
-  TrendingDown, 
-  Zap, 
-  RefreshCw, 
+import {
+  Upload,
+  FileImage,
+  CheckCircle2,
+  TrendingUp,
+  TrendingDown,
+  Zap,
+  RefreshCw,
   Image as ImageIcon,
   AlertTriangle,
   ShieldCheck,
@@ -19,7 +19,10 @@ interface TradesViewProps {
   onNavigateToDashboard: () => void;
 }
 
+import { useAuth } from '../app/auth/AuthContext';
+
 export default function TradesView({ onAddTrade, onNavigateToDashboard }: TradesViewProps) {
+  const { session } = useAuth();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [usePreset, setUsePreset] = useState<string | null>(null);
@@ -44,7 +47,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
   const [manualNotes, setManualNotes] = useState('');
   const [setupTypeVal, setSetupTypeVal] = useState('breakout');
   const [mistakeTypeVal, setMistakeTypeVal] = useState('none');
-  
+
   const [scanFailed, setScanFailed] = useState(false);
   const [diagnostics, setDiagnostics] = useState<{
     geminiConnected: boolean;
@@ -74,7 +77,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
     setMistakeTypeVal('none');
     setUserConfirmedLowConfidence(false);
   };
-  
+
   const [userConfirmedLowConfidence, setUserConfirmedLowConfidence] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -99,7 +102,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
         warnings.push("Take Profit cannot be above or equal to Entry Price on a SHORT position.");
       }
     }
-    
+
     // calculate actual RR based on entry, tp, sl
     const risk = Math.abs(entryPrice - slLevel);
     const reward = Math.abs(tpLevel - entryPrice);
@@ -116,10 +119,10 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve) => {
       const qPref = localStorage.getItem('tradelense_img_quality') || 'balanced';
-      
+
       let maxDim = 1200;
       let quality = 0.75;
-      
+
       if (qPref === 'high') {
         maxDim = 2400; // Large size
         quality = 0.95; // Crisp
@@ -136,7 +139,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
         img.onload = () => {
           let width = img.width;
           let height = img.height;
-          
+
           if (width > maxDim || height > maxDim) {
             if (width > height) {
               height = Math.round((height * maxDim) / width);
@@ -146,12 +149,12 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
               height = maxDim;
             }
           }
-          
+
           const canvas = document.createElement('canvas');
           canvas.width = width;
           canvas.height = height;
           const ctx = canvas.getContext('2d');
-          
+
           if (ctx) {
             ctx.drawImage(img, 0, 0, width, height);
             // Export image as lossy compressed JPEG
@@ -185,13 +188,13 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
       setSessionVal(data.session || 'London');
       setPipsVal(data.pips || 0);
       setPositionSize(data.size || 1.0);
-      
+
       // Calculate a highly realistic dynamic initial PNL based on points/pips and pair specifications
       let basePnl = 0;
       if (data.pnl) {
         basePnl = data.pnl;
       } else if (data.pips) {
-        basePnl = data.pips * 10; 
+        basePnl = data.pips * 10;
       } else {
         const diff = (data.exitPrice - data.entryPrice) * (data.type === 'LONG' ? 1 : -1);
         let multiplier = 1000;
@@ -251,7 +254,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
       }
 
       const parsed = await res.json();
-      
+
       // Complete the progress bar cleanly
       setProgress(100);
 
@@ -339,7 +342,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
     startScanAnimation(base64, file.type, undefined);
   };
 
-  const handleLogToTerminal = () => {
+  const handleLogToTerminal = async () => {
     if (!extractedData) return;
 
     const warnings = getValidationWarnings();
@@ -355,59 +358,44 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
     const calculatedRR = Math.abs(tpLevel - entryPrice) / (Math.abs(entryPrice - slLevel) || 1);
 
     // Append user-verified details and generate a fresh enriched Trade element back upstream
-    const newTrade: Trade = {
-      id: `tx-ocr-${Date.now()}`,
-      asset: assetName,
-      type: positionType,
-      entryPrice: parseFloat(entryPrice as any) || 0,
-      exitPrice: parseFloat(exitPrice as any) || 0,
-      pnl: parseFloat(customPnl as any) || 0,
-      time: new Date().toISOString(),
-      duration: extractedData.duration || '2h',
+    const newTrade: any = {
+      symbol: assetName,
+      side: positionType,
+      entry_price: parseFloat(entryPrice as any) || 0,
+      exit_price: parseFloat(exitPrice as any) || 0,
+      pnl_realized: parseFloat(customPnl as any) || 0,
       notes: manualNotes,
-
-      // Expanded visual extraction metadata
-      sl: parseFloat(slLevel as any) || undefined,
-      tp: parseFloat(tpLevel as any) || undefined,
-      rr: parseFloat((extractedData.rr || calculatedRR || 2.0).toFixed(2) as any),
-      pips: parseInt(pipsVal as any) || undefined,
-      riskPercent: extractedData.riskPercent || 1.5,
-      rewardPercent: extractedData.rewardPercent || 3.5,
-      timeframe: timeframeVal,
-      chartTime: extractedData.chartTime || new Date().toISOString(),
-      candleCount: extractedData.candleCount || 10,
-      detectedTool: extractedData.detectedTool || 'NONE',
-      estimatedOutcome: extractedData.estimatedOutcome || 'MANUAL_CLOSED',
-      session: sessionVal as any,
-      day: (extractedData.day || 'Wednesday') as any,
-
-      // Structured AI Intelligence
-      setup_type: setupTypeVal as any,
-      market_structure: extractedData.market_structure || 'Identified technical consolidation zone split',
-      emotion_detected: selectedEmotion as any,
-      mistake_type: mistakeTypeVal as any,
-      discipline_score: extractedData.discipline_score || (warnings.length > 0 ? 70 : 92),
-      execution_quality: extractedData.execution_quality || 85,
-      risk_management_quality: extractedData.risk_management_quality || (warnings.length > 0 ? 65 : 95),
-      setup_quality: extractedData.setup_quality || 88,
-      confidence_score: extractedData.confidence || 90,
-
-      // Position Overrides
-      size: parseFloat(positionSize as any) || 1.0,
-      user_emotion: selectedEmotion,
-      user_notes: manualNotes,
-      image_url: extractedData.image_url || extractedData.imageUrl || undefined,
-      validationWarnings: warnings
+      status: "OPEN",
     };
 
-    onAddTrade(newTrade);
     setSaveSuccess(true);
     setApiError(null);
-    
-    // Clear state files and route back
-    setTimeout(() => {
-      onNavigateToDashboard();
-    }, 1500);
+
+    try {
+      const res = await fetch('/api/trades', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(session?.access_token ? { 'Authorization': `Bearer ${session.access_token}` } : {})
+        },
+        body: JSON.stringify(newTrade)
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to create trade');
+      }
+
+      const savedTrade = await res.json();
+      onAddTrade(savedTrade);
+
+      setTimeout(() => {
+        onNavigateToDashboard();
+      }, 1500);
+    } catch (e: any) {
+      console.error(e);
+      setApiError(e.message || 'Failed to save trade');
+      setSaveSuccess(false);
+    }
   };
 
   const handleReset = () => {
@@ -431,17 +419,16 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-        
+
         {/* Left Side: Upload Drag/Drop zone */}
         <div className="md:col-span-7 space-y-6">
-          <div 
+          <div
             onDragOver={handleDragOver}
             onDrop={handleDrop}
-            className={`min-h-[350px] rounded-xl border-2 border-dashed flex flex-col items-center justify-center p-8 transition-all duration-300 relative overflow-hidden backdrop-blur-md ${
-              previewUrl || usePreset 
-                ? 'border-brand-cyan/20 bg-black/40' 
+            className={`min-h-[350px] rounded-xl border-2 border-dashed flex flex-col items-center justify-center p-8 transition-all duration-300 relative overflow-hidden backdrop-blur-md ${previewUrl || usePreset
+                ? 'border-brand-cyan/20 bg-black/40'
                 : 'border-white/10 hover:border-brand-cyan/40 bg-white/[0.01]'
-            }`}
+              }`}
           >
             {/* The laser scanning bar animation (Visible when scanning is running) */}
             {scanning && (
@@ -450,7 +437,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
 
             {/* Core Display depending on stage */}
             {(!previewUrl && !usePreset) ? (
-              <div 
+              <div
                 className="text-center space-y-4 cursor-pointer p-6 w-full"
                 onClick={() => fileInputRef.current?.click()}
               >
@@ -497,12 +484,12 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
               </div>
             )}
 
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileChange} 
-              accept="image/*" 
-              className="hidden" 
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*"
+              className="hidden"
             />
           </div>
 
@@ -512,23 +499,23 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
               No Snapshot handy? Simulate Preset chart matrices:
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <button 
+              <button
                 onClick={() => selectPreset('gold')}
                 className="p-3 bg-black/40 border border-white/5 rounded-lg text-left hover:border-brand-cyan/40 group transition-all cursor-pointer"
               >
                 <div className="font-sans font-semibold text-xs text-white mb-0.5 group-hover:text-brand-cyan">XAU/USD Breakout</div>
                 <div className="text-[10px] text-[#849495] font-light">Gold Bullish Channel Breach</div>
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => selectPreset('nasdaq')}
                 className="p-3 bg-black/40 border border-white/5 rounded-lg text-left hover:border-brand-purple/40 group transition-all cursor-pointer"
               >
                 <div className="font-sans font-semibold text-xs text-white mb-0.5 group-hover:text-brand-purple">NQ100 Head & Shoulders</div>
                 <div className="text-[10px] text-[#849495] font-light">Nasdaq Index trend reversal pivot</div>
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => selectPreset('eurusd')}
                 className="p-3 bg-black/40 border border-white/5 rounded-lg text-left hover:border-brand-emerald/40 group transition-all cursor-pointer"
               >
@@ -548,9 +535,8 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                 <span>AI Core Extraction Diagnostic</span>
               </h3>
               {extractedData && (
-                <span className={`px-2 py-0.5 rounded text-[9px] font-mono font-bold tracking-widest ${
-                  extractedData.isMock ? 'bg-brand-purple/20 text-brand-purple border border-brand-purple/30' : 'bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30'
-                }`}>
+                <span className={`px-2 py-0.5 rounded text-[9px] font-mono font-bold tracking-widest ${extractedData.isMock ? 'bg-brand-purple/20 text-brand-purple border border-brand-purple/30' : 'bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30'
+                  }`}>
                   {extractedData.isMock ? 'DEFERRED DEMO' : 'LIVE COGNITIVE'}
                 </span>
               )}
@@ -572,9 +558,9 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                   <span>{progress}%</span>
                 </div>
                 <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-brand-cyan shadow-[0_0_10px_#00dbe7] transition-all duration-300 animate-pulse" 
-                    style={{ width: `${progress}%` }} 
+                  <div
+                    className="h-full bg-brand-cyan shadow-[0_0_10px_#00dbe7] transition-all duration-300 animate-pulse"
+                    style={{ width: `${progress}%` }}
                   />
                 </div>
                 <p className="text-[10px] text-[#849495] font-light italic">
@@ -595,7 +581,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                   <p className="text-[11px] opacity-90 leading-relaxed font-light">
                     The cognitive engine was unable to perform OCR and structure extraction from the uploaded layout.
                   </p>
-                  
+
                   {/* Reasons list */}
                   <div className="space-y-1.5 mt-1">
                     <div className="font-mono text-[9px] uppercase font-bold text-[#849495] tracking-wider">POSSIBLE REASONS:</div>
@@ -714,7 +700,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
               </div>
             ) : extractedData ? (
               <div className="space-y-6">
-                
+
                 {/* Visual Confidence Alert / Label */}
                 {extractedData.confidence === 'N/A' ? (
                   <div className="flex items-center justify-between bg-white/[0.03] border border-white/10 rounded-lg p-3">
@@ -774,8 +760,8 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
                       <label className="text-[10px] font-mono text-[#849495] uppercase font-semibold">Position Size (Lots)</label>
-                      <input 
-                        type="number" 
+                      <input
+                        type="number"
                         value={positionSize}
                         onChange={(e) => setPositionSize(parseFloat(e.target.value) || 0)}
                         step="0.01"
@@ -785,14 +771,13 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                     </div>
                     <div className="space-y-1">
                       <label className="text-[10px] font-mono text-[#849495] uppercase font-semibold">Realized Net PnL ($)</label>
-                      <input 
-                        type="number" 
+                      <input
+                        type="number"
                         value={customPnl}
                         onChange={(e) => setCustomPnl(parseFloat(e.target.value) || 0)}
                         step="0.01"
-                        className={`w-full bg-black/40 border border-white/10 rounded px-2.5 py-1.5 text-xs font-mono focus:border-brand-cyan/50 focus:outline-none ${
-                          customPnl >= 0 ? 'text-brand-emerald' : 'text-brand-purple'
-                        }`}
+                        className={`w-full bg-black/40 border border-white/10 rounded px-2.5 py-1.5 text-xs font-mono focus:border-brand-cyan/50 focus:outline-none ${customPnl >= 0 ? 'text-brand-emerald' : 'text-brand-purple'
+                          }`}
                       />
                     </div>
                   </div>
@@ -800,7 +785,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1 col-span-2">
                       <label className="text-[10px] font-mono text-[#849495] uppercase font-semibold">Felt/Observed Trading Emotion</label>
-                      <select 
+                      <select
                         value={selectedEmotion}
                         onChange={(e) => setSelectedEmotion(e.target.value)}
                         className="w-full bg-[#131118] border border-white/10 rounded px-2.5 py-1.5 text-xs text-white focus:border-brand-cyan/50 focus:outline-none"
@@ -818,7 +803,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
 
                   <div className="space-y-1">
                     <label className="text-[10px] font-mono text-[#849495] uppercase font-semibold">Manual Notes Override / Reflection</label>
-                    <textarea 
+                    <textarea
                       value={manualNotes}
                       rows={3}
                       onChange={(e) => setManualNotes(e.target.value)}
@@ -839,7 +824,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                     <div className="grid grid-cols-2 gap-4">
                       <div className="bg-black/20 border border-white/5 p-2.5 rounded hover:border-white/10 transition-colors">
                         <label className="text-[8px] font-mono text-[#849495] uppercase font-bold tracking-widest block">ASSET</label>
-                        <input 
+                        <input
                           type="text"
                           value={assetName}
                           onChange={(e) => setAssetName(e.target.value)}
@@ -848,7 +833,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                       </div>
                       <div className="bg-black/20 border border-white/5 p-2.5 rounded hover:border-white/10 transition-colors">
                         <label className="text-[8px] font-mono text-[#849495] uppercase font-bold tracking-widest block">DIRECTION</label>
-                        <select 
+                        <select
                           value={positionType}
                           onChange={(e) => setPositionType(e.target.value as any)}
                           className="w-full bg-transparent border-none text-xs font-mono font-bold mt-0.5 p-0 focus:outline-none focus:ring-0 cursor-pointer text-brand-cyan"
@@ -862,7 +847,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                     <div className="grid grid-cols-2 gap-4">
                       <div className="bg-black/20 border border-white/5 p-2.5 rounded hover:border-white/10 transition-colors">
                         <label className="text-[8px] font-mono text-[#849495] uppercase font-bold tracking-widest block">ENTRY PRICE</label>
-                        <input 
+                        <input
                           type="number"
                           value={entryPrice}
                           onChange={(e) => setEntryPrice(parseFloat(e.target.value) || 0)}
@@ -872,7 +857,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                       </div>
                       <div className="bg-black/20 border border-white/5 p-2.5 rounded hover:border-white/10 transition-colors">
                         <label className="text-[8px] font-mono text-[#849495] uppercase font-bold tracking-widest block">EXIT PRICE</label>
-                        <input 
+                        <input
                           type="number"
                           value={exitPrice}
                           onChange={(e) => setExitPrice(parseFloat(e.target.value) || 0)}
@@ -885,7 +870,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                     <div className="grid grid-cols-2 gap-4">
                       <div className="bg-black/20 border border-white/5 p-2.5 rounded hover:border-white/10 transition-colors">
                         <label className="text-[8px] font-mono text-[#849495] uppercase font-bold tracking-widest block">STOP LOSS (SL)</label>
-                        <input 
+                        <input
                           type="number"
                           value={slLevel}
                           onChange={(e) => setSlLevel(parseFloat(e.target.value) || 0)}
@@ -895,7 +880,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                       </div>
                       <div className="bg-black/20 border border-white/5 p-2.5 rounded hover:border-white/10 transition-colors">
                         <label className="text-[8px] font-mono text-[#849495] uppercase font-bold tracking-widest block">TAKE PROFIT (TP)</label>
-                        <input 
+                        <input
                           type="number"
                           value={tpLevel}
                           onChange={(e) => setTpLevel(parseFloat(e.target.value) || 0)}
@@ -908,7 +893,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                     <div className="grid grid-cols-3 gap-3">
                       <div className="bg-black/20 border border-white/5 p-2 rounded">
                         <span className="text-[7.5px] font-mono text-[#849495] uppercase font-bold block">TIMEFRAME</span>
-                        <input 
+                        <input
                           type="text"
                           value={timeframeVal}
                           onChange={(e) => setTimeframeVal(e.target.value)}
@@ -917,7 +902,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                       </div>
                       <div className="bg-black/20 border border-white/5 p-2 rounded">
                         <span className="text-[7.5px] font-mono text-[#849495] uppercase font-bold block">SESSION</span>
-                        <select 
+                        <select
                           value={sessionVal}
                           onChange={(e) => setSessionVal(e.target.value)}
                           className="w-full bg-transparent border-none text-[10.5px] text-white font-mono font-bold mt-0.5 p-0 focus:outline-none focus:ring-0"
@@ -930,7 +915,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                       </div>
                       <div className="bg-black/20 border border-white/5 p-2 rounded">
                         <span className="text-[7.5px] font-mono text-[#849495] uppercase font-bold block">PIPS / PTS</span>
-                        <input 
+                        <input
                           type="number"
                           value={pipsVal}
                           onChange={(e) => setPipsVal(parseInt(e.target.value) || 0)}
@@ -942,7 +927,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                     <div className="grid grid-cols-2 gap-3">
                       <div className="bg-black/20 border border-white/5 p-2 rounded hover:border-white/10 transition-colors">
                         <span className="text-[7.5px] font-mono text-[#849495] uppercase font-bold block">SETUP TYPE</span>
-                        <select 
+                        <select
                           value={setupTypeVal}
                           onChange={(e) => setSetupTypeVal(e.target.value)}
                           className="w-full bg-transparent border-none text-[10.5px] text-brand-cyan font-mono font-bold mt-0.5 p-0 focus:outline-none focus:ring-0 cursor-pointer"
@@ -958,7 +943,7 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
 
                       <div className="bg-black/20 border border-white/5 p-2 rounded hover:border-white/10 transition-colors">
                         <span className="text-[7.5px] font-mono text-[#849495] uppercase font-bold block">EXECUTION MISTAKE</span>
-                        <select 
+                        <select
                           value={mistakeTypeVal}
                           onChange={(e) => setMistakeTypeVal(e.target.value)}
                           className="w-full bg-transparent border-none text-[10.5px] text-brand-purple font-mono font-bold mt-0.5 p-0 focus:outline-none focus:ring-0 cursor-pointer"
@@ -988,11 +973,10 @@ export default function TradesView({ onAddTrade, onNavigateToDashboard }: Trades
                 ) : (
                   <button
                     onClick={handleLogToTerminal}
-                    className={`w-full py-4 font-semibold text-xs rounded-lg tracking-widest uppercase transition-all duration-300 cursor-pointer ${
-                      userConfirmedLowConfidence 
+                    className={`w-full py-4 font-semibold text-xs rounded-lg tracking-widest uppercase transition-all duration-300 cursor-pointer ${userConfirmedLowConfidence
                         ? 'bg-yellow-500 hover:bg-yellow-600 text-black shadow-[0_0_20px_rgba(234,179,8,0.25)]'
                         : 'bg-brand-cyan hover:shadow-[0_0_25px_rgba(0,219,231,0.25)] text-black'
-                    }`}
+                      }`}
                   >
                     {userConfirmedLowConfidence ? 'Force Override & Commit Log' : 'Verify & Commit to Journal'}
                   </button>

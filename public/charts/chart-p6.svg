@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="320" height="160">
+  <rect width="320" height="160" fill="#0E0E14"/>
+  <!-- Grid -->
+  <line x1="0" y1="40" x2="320" y2="40" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="0" y1="80" x2="320" y2="80" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="0" y1="120" x2="320" y2="120" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="80" y1="0" x2="80" y2="160" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="160" y1="0" x2="160" y2="160" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="240" y1="0" x2="240" y2="160" stroke="#1A1A24" stroke-width="1"/>
+  <!-- XAUUSD Fair Value Gap Fill — precision entry at FVG -->
+  <!-- Downmove creating FVG -->
+  <line x1="10" y1="32" x2="10" y2="65" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="5" y="36" width="10" height="25" rx="1" fill="#EF4444" opacity="0.75"/>
+  <line x1="26" y1="45" x2="26" y2="78" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="21" y="50" width="10" height="24" rx="1" fill="#EF4444" opacity="0.8"/>
+  <!-- FVG zone -->
+  <rect x="42" y="50" width="50" height="28" rx="2" fill="#8B5CF6" opacity="0.07" stroke="#8B5CF6" stroke-width="0.7" stroke-opacity="0.35" stroke-dasharray="3,2"/>
+  <text x="44" y="62" font-family="'JetBrains Mono', monospace" font-size="7" fill="#8B5CF6" opacity="0.5">FVG</text>
+  <!-- Price fills into FVG then launches -->
+  <line x1="48" y1="60" x2="48" y2="88" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="43" y="64" width="10" height="20" rx="1" fill="#EF4444" opacity="0.6"/>
+  <line x1="64" y1="58" x2="64" y2="78" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="59" y="62" width="10" height="14" rx="1" fill="#EF4444" opacity="0.55"/>
+  <!-- Entry + reversal -->
+  <line x1="82" y1="50" x2="82" y2="78" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="77" y="54" width="10" height="20" rx="1" fill="#34D399" opacity="0.82"/>
+  <line x1="98" y1="40" x2="98" y2="60" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="93" y="43" width="10" height="15" rx="1" fill="#34D399" opacity="0.88"/>
+  <line x1="114" y1="28" x2="114" y2="46" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="109" y="31" width="10" height="13" rx="1" fill="#34D399" opacity="0.9"/>
+  <line x1="130" y1="18" x2="130" y2="34" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="125" y="20" width="10" height="12" rx="1" fill="#34D399" opacity="0.92"/>
+  <line x1="146" y1="12" x2="146" y2="26" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="141" y="14" width="10" height="10" rx="1" fill="#34D399" opacity="0.88"/>
+  <line x1="162" y1="10" x2="162" y2="22" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="157" y="12" width="10" height="8" rx="1" fill="#34D399" opacity="0.85"/>
+  <defs>
+    <linearGradient id="g6" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#34D399" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="glow6">
+      <feGaussianBlur stdDeviation="1.8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <path d="M 78 62 C 92 52, 108 36, 126 22 S 153 12, 175 8" fill="none" stroke="url(#g6)" stroke-width="1.8" stroke-linecap="round" filter="url(#glow6)"/>
+  <circle cx="175" cy="8" r="3.5" fill="#34D399" opacity="0.9"/>
+  <circle cx="175" cy="8" r="6" fill="#34D399" opacity="0.15"/>
+  <text x="10" y="155" font-family="'JetBrains Mono', monospace" font-size="9" fill="#34D399" opacity="0.6">XAUUSD · LONG · M30</text>
+  <text x="230" y="155" font-family="'JetBrains Mono', monospace" font-size="9" fill="#34D399" opacity="0.5">+2.8R</text>
+</svg>

@@ -28,7 +28,7 @@ export function AppLayout() {
 
                 {/* Main Content Area */}
                 <main
-                    className="flex-1 w-full max-w-[1400px] mx-auto p-4 lg:p-8 overflow-x-hidden"
+                    className="flex-1 w-full max-w-[1400px] mx-auto p-4 lg:p-6 xl:p-8 overflow-x-hidden"
                     id="main-content"
                     role="main"
                 >

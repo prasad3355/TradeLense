@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import { useLandingAnimations } from "../hooks/useLandingAnimations";
 
 export default function LandingView({ onStartPro }: { onStartPro: () => void }) {
@@ -36,15 +37,15 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
                 <path strokeLinecap="round" strokeLinejoin="round" d="m19 9-7 7-7-7" />
               </svg>
             </a>
-            <a className="flex items-center gap-1 text-slate-300 hover:text-cream transition-colors group cursor-pointer" href="#dashboard">
+            <Link className="flex items-center gap-1 text-slate-300 hover:text-cream transition-colors group cursor-pointer" to="/login">
               <span>Solutions</span>
               <svg className="w-3.5 h-3.5 text-slate-400 group-hover:text-cream transition-colors" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m19 9-7 7-7-7" />
               </svg>
-            </a>
-            <a className="text-slate-300 hover:text-cream transition-colors" href="#dashboard">
+            </Link>
+            <Link className="text-slate-300 hover:text-cream transition-colors" to="/login">
               Supported Brokers
-            </a>
+            </Link>
             <a className="text-slate-300 hover:text-cream transition-colors" href="#pricing">
               Pricing
             </a>
@@ -57,15 +58,15 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
           </nav>
 
           <div className="flex items-center gap-6">
-            <a className="text-sm font-medium text-slate-300 hover:text-cream transition-colors" href="#dashboard">
+            <Link className="text-sm font-medium text-slate-300 hover:text-cream transition-colors" to="/login">
               Log In
-            </a>
-            <a className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-electricViolet to-softPink hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-purple-500/10 transition-all duration-200" href="#dashboard">
+            </Link>
+            <Link className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-electricViolet to-softPink hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-purple-500/10 transition-all duration-200" to="/signup">
               <span>Get Started</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m9 5 7 7-7 7" />
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
       </header>
@@ -81,9 +82,9 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
             AI-powered trade journaling, psychology tracking, and performance analytics designed to help traders improve consistency and execution.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto" data-purpose="hero-actions">
-            <a className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-sm bg-cyan-glow text-obsidian-950 hover:bg-cyan-bright transition-all duration-200 cyan-glow-sm hover:scale-[1.02] active:scale-[0.98] text-center shadow-lg shadow-cyan-glow/20" href="#dashboard">
+            <Link className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-sm bg-cyan-glow text-obsidian-950 hover:bg-cyan-bright transition-all duration-200 cyan-glow-sm hover:scale-[1.02] active:scale-[0.98] text-center shadow-lg shadow-cyan-glow/20" to="/signup">
               Start Journaling
-            </a>
+            </Link>
             <a className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-medium text-sm text-cream bg-obsidian-800/80 hover:bg-obsidian-700/80 border border-white/10 hover:border-white/20 transition-all duration-200 text-center" href="#features">
               Explore Features
             </a>
@@ -751,9 +752,9 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
                 <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Standard P&amp;L Metrics</li>
               </ul>
             </div>
-            <a data-pricing-element="cta" className="mt-8 w-full py-3 rounded-xl border border-white/10 hover:border-white/30 text-cream text-xs font-bold uppercase tracking-wider text-center block transition-colors" href="#dashboard">
+            <Link data-pricing-element="cta" className="mt-8 w-full py-3 rounded-xl border border-white/10 hover:border-white/30 text-cream text-xs font-bold uppercase tracking-wider text-center block transition-colors" to="/signup">
               Start Free
-            </a>
+            </Link>
           </div>
           {/* Pro Plan */}
           <div className="card-glass p-8 rounded-2xl border-2 border-cyan-glow relative flex flex-col justify-between cyan-glow-sm bg-obsidian-850" data-animation="pricing-card" style={{ borderColor: 'rgb(139, 92, 246)', boxShadow: 'rgba(168, 85, 247, 0.3) 0px 0px 35px -5px, rgba(0, 240, 255, 0.25) 0px 0px 20px -5px' }}>
@@ -776,7 +777,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
                 <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Trade Sandbox Replay Terminal</li>
               </ul>
             </div>
-            <a data-pricing-element="cta" className="mt-8 w-full py-3.5 rounded-xl bg-gradient-to-r from-[#00F0FF] via-[#8B5CF6] to-[#A855F7] text-white text-xs font-bold font-mono uppercase tracking-wider text-center block shadow-lg shadow-purple-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all" href="#dashboard">Get Started Pro</a>
+            <Link data-pricing-element="cta" className="mt-8 w-full py-3.5 rounded-xl bg-gradient-to-r from-[#00F0FF] via-[#8B5CF6] to-[#A855F7] text-white text-xs font-bold font-mono uppercase tracking-wider text-center block shadow-lg shadow-purple-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all" to="/signup">Get Started Pro</Link>
           </div>
           {/* Elite Firm Plan */}
           <div className="card-glass p-8 rounded-2xl flex flex-col justify-between" data-animation="pricing-card">
@@ -794,9 +795,9 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
                 <li className="flex items-center gap-2" data-pricing-element="feature"><svg className="w-4 h-4 text-[#A855F7] shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Priority Telemetry Stream</li>
               </ul>
             </div>
-            <a data-pricing-element="cta" className="mt-8 w-full py-3 rounded-xl border border-white/10 hover:border-white/30 text-cream text-xs font-bold uppercase tracking-wider text-center block transition-colors" href="#dashboard">
+            <Link data-pricing-element="cta" className="mt-8 w-full py-3 rounded-xl border border-white/10 hover:border-white/30 text-cream text-xs font-bold uppercase tracking-wider text-center block transition-colors" to="/login">
               Contact Desk Sales
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -812,7 +813,7 @@ export default function LandingView({ onStartPro }: { onStartPro: () => void }) 
             Journal every trade. Understand your performance. Eliminate unforced psychological errors.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4" data-animation="cta-actions">
-            <a className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#00F0FF] via-[#8B5CF6] to-[#A855F7] hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-purple-500/20 transition-all duration-200" href="#dashboard">Get Started Free</a>
+            <Link className="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#00F0FF] via-[#8B5CF6] to-[#A855F7] hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-purple-500/20 transition-all duration-200" to="/login">Get Started Free</Link>
             <a className="w-full sm:w-auto px-8 py-4 rounded-xl font-medium text-sm text-cream bg-obsidian-800 border border-white/10 hover:border-white/20 transition-all duration-200" href="#features">
               Explore Tradelense OS
             </a>

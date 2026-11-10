@@ -4,6 +4,7 @@ import cors from 'cors';
 import { env } from './config/env';
 import { healthRouter } from './routes/health';
 import testAuthRouter from './routes/test-auth';
+import { tradesRouter } from './routes/trades';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 export function createApp(): Express {
@@ -43,6 +44,7 @@ export function createApp(): Express {
 
     // Mount test auth endpoints (demonstrates Auth/AuthZ/Validation stack)
     app.use('/api/v2/test-auth', testAuthRouter);
+    app.use('/api/trades', tradesRouter);
 
     // Catch-all 404 for API routes
     app.use('/api/*', notFoundHandler);

@@ -8,12 +8,13 @@ import { Login } from './routes/public/Login';
 import { Signup } from './routes/public/Signup';
 import { ForgotPassword } from './routes/public/ForgotPassword';
 import { UpdatePassword } from './routes/public/UpdatePassword';
+import { AuthCallback } from './routes/public/AuthCallback';
 
-import { JournalPlaceholder } from './routes/app/JournalPlaceholder';
-import { DashboardPlaceholder } from './routes/app/DashboardPlaceholder';
-import { AnalyticsPlaceholder } from './routes/app/AnalyticsPlaceholder';
-import { BehaviorPlaceholder } from './routes/app/BehaviorPlaceholder';
-import { CoachPlaceholder } from './routes/app/CoachPlaceholder';
+import { Journal } from './routes/app/Journal';
+import { Dashboard } from './routes/app/Dashboard/Dashboard';
+import { Analytics } from './routes/app/Analytics/Analytics';
+import { Behavior } from './routes/app/Behavior/Behavior';
+import { AICoach } from './routes/app/AICoach/AICoach';
 import { SettingsPlaceholder } from './routes/app/SettingsPlaceholder';
 
 import { NotFound } from './routes/NotFound';
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
                 path: 'update-password',
                 element: <UpdatePassword />,
             },
+            {
+                path: 'auth/callback',
+                element: <AuthCallback />,
+            },
         ],
     },
     {
@@ -63,27 +68,31 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <DashboardPlaceholder />,
+                element: <Dashboard />,
             },
             {
                 path: 'journal',
-                element: <JournalPlaceholder />,
+                element: <Journal />,
             },
             {
                 path: 'dashboard',
-                element: <DashboardPlaceholder />,
+                element: <Dashboard />,
             },
             {
                 path: 'analytics',
-                element: <AnalyticsPlaceholder />,
+                element: <Analytics />,
             },
             {
                 path: 'behavior',
-                element: <BehaviorPlaceholder />,
+                element: <Behavior />,
             },
             {
                 path: 'coach',
-                element: <CoachPlaceholder />,
+                element: <AICoach />,
+            },
+            {
+                path: 'ai-coach',
+                element: <AICoach />,
             },
             {
                 path: 'settings',

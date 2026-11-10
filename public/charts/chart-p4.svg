@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160" width="320" height="160">
+  <rect width="320" height="160" fill="#0E0E14"/>
+  <!-- Grid -->
+  <line x1="0" y1="40" x2="320" y2="40" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="0" y1="80" x2="320" y2="80" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="0" y1="120" x2="320" y2="120" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="80" y1="0" x2="80" y2="160" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="160" y1="0" x2="160" y2="160" stroke="#1A1A24" stroke-width="1"/>
+  <line x1="240" y1="0" x2="240" y2="160" stroke="#1A1A24" stroke-width="1"/>
+  <!-- US30 Daily High Sweep — liquidity grab then short -->
+  <!-- Slow grind up -->
+  <line x1="12" y1="120" x2="12" y2="98" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="7" y="102" width="10" height="15" rx="1" fill="#34D399" opacity="0.65"/>
+  <line x1="28" y1="108" x2="28" y2="88" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="23" y="92" width="10" height="14" rx="1" fill="#34D399" opacity="0.65"/>
+  <line x1="44" y1="96" x2="44" y2="76" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="39" y="80" width="10" height="14" rx="1" fill="#34D399" opacity="0.7"/>
+  <line x1="60" y1="84" x2="60" y2="64" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="55" y="68" width="10" height="14" rx="1" fill="#34D399" opacity="0.72"/>
+  <!-- Sweep above daily high — long wick -->
+  <line x1="80" y1="28" x2="80" y2="78" stroke="#60a0d0" stroke-width="1.5"/>
+  <rect x="75" y="52" width="10" height="22" rx="1" fill="#EF4444" opacity="0.75"/>
+  <!-- Rejection cascade -->
+  <line x1="96" y1="60" x2="96" y2="88" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="91" y="64" width="10" height="20" rx="1" fill="#EF4444" opacity="0.85"/>
+  <line x1="112" y1="72" x2="112" y2="96" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="107" y="76" width="10" height="18" rx="1" fill="#EF4444" opacity="0.88"/>
+  <line x1="128" y1="82" x2="128" y2="104" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="123" y="86" width="10" height="16" rx="1" fill="#EF4444" opacity="0.85"/>
+  <!-- Small bounce, then continue -->
+  <line x1="144" y1="90" x2="144" y2="108" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="139" y="94" width="10" height="12" rx="1" fill="#34D399" opacity="0.4"/>
+  <line x1="160" y1="92" x2="160" y2="112" stroke="#4a4a60" stroke-width="1.2"/>
+  <rect x="155" y="96" width="10" height="14" rx="1" fill="#EF4444" opacity="0.8"/>
+  <!-- Daily high marker -->
+  <line x1="0" y1="42" x2="200" y2="42" stroke="#60a0d0" stroke-dasharray="4,3" stroke-width="0.8" stroke-opacity="0.4"/>
+  <text x="205" y="46" font-family="'JetBrains Mono', monospace" font-size="8" fill="#60a0d0" opacity="0.5">Daily High</text>
+  <defs>
+    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#F87171" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#EF4444" stop-opacity="0.85"/>
+    </linearGradient>
+    <filter id="glow4">
+      <feGaussianBlur stdDeviation="1.8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Short profit curve -->
+  <path d="M 76 38 C 90 52, 106 70, 125 88 S 150 100, 175 108" fill="none" stroke="url(#g4)" stroke-width="1.8" stroke-linecap="round" filter="url(#glow4)"/>
+  <circle cx="175" cy="108" r="3.5" fill="#EF4444" opacity="0.9"/>
+  <circle cx="175" cy="108" r="6" fill="#EF4444" opacity="0.15"/>
+  <text x="10" y="155" font-family="'JetBrains Mono', monospace" font-size="9" fill="#34D399" opacity="0.6">US30 · SHORT · H4</text>
+  <text x="230" y="155" font-family="'JetBrains Mono', monospace" font-size="9" fill="#34D399" opacity="0.5">+1.8R</text>
+</svg>

@@ -32,7 +32,7 @@ export default function Sidebar({ onUploadClick, isOpen, onClose }: SidebarProps
       )}
 
       <aside
-        className={`fixed left-0 top-0 h-full w-64 flex flex-col p-4 lg:p-6 z-50 bg-[#0d0d0f] lg:bg-black/60 lg:backdrop-blur-3xl border-r border-white/5 font-sans select-none transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        className={`fixed left-0 top-0 h-full w-64 flex flex-col p-4 lg:p-6 z-50 bg-[#0D0D0F] lg:bg-[#0D0D0F] border-r border-[#202126] font-sans select-none transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
           }`}
         aria-label="Sidebar navigation"
       >
@@ -43,18 +43,18 @@ export default function Sidebar({ onUploadClick, isOpen, onClose }: SidebarProps
             onClick={onClose}
             className="flex items-center gap-3 cursor-pointer hover:opacity-90 active:scale-95 transition-all outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan rounded-lg"
           >
-            <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center border border-brand-cyan/30 shadow-[0_0_15px_rgba(0,219,231,0.2)]">
-              <Terminal className="text-brand-cyan w-4 h-4 lg:w-5 lg:h-5 animate-pulse" />
+            <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-[#15141B] flex items-center justify-center border border-[#282333]">
+              <Terminal className="text-[#8B5CF6] w-4 h-4 lg:w-5 lg:h-5" />
             </div>
             <div>
-              <h1 className="font-display text-lg lg:text-[20px] leading-tight text-white font-bold tracking-tight">
+              <h1 className="font-display text-lg lg:text-[20px] leading-tight text-[#E8E8EA] font-bold tracking-tight">
                 Tradelense
               </h1>
             </div>
           </Link>
           <button
             onClick={onClose}
-            className="lg:hidden p-2 text-[#849495] hover:text-white transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan rounded"
+            className="lg:hidden p-2 text-[#77777F] hover:text-[#D5D5D8] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] rounded"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />
@@ -66,21 +66,21 @@ export default function Sidebar({ onUploadClick, isOpen, onClose }: SidebarProps
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentPath === item.path || currentPath.startsWith(item.path + '/');
+            const isAiCoach = item.label === 'AI COACH';
+
             return (
               <NavLink
                 key={item.path}
                 to={item.path}
                 onClick={onClose}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left font-sans text-xs font-semibold tracking-wider transition-all duration-200 relative group outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan ${isActive
-                    ? 'text-brand-cyan bg-brand-cyan/10 border-l-2 border-brand-cyan shadow-[0_0_20px_rgba(0,219,231,0.08)]'
-                    : 'text-[#b9cacb] hover:bg-white/[0.03] hover:text-white'
+                className={`flex items-center gap-3 py-3 pr-4 rounded-lg text-left font-sans text-xs font-semibold tracking-wider transition-all duration-200 relative group outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] border-l-[3px] ${isActive
+                  ? 'text-[#F3F3F5] bg-[#17151F] border-[#7C6CF2] pl-[13px]'
+                  : 'text-[#85858C] hover:bg-[#141419] hover:text-[#D7D7DC] border-transparent pl-[13px]'
                   }`}
               >
-                <Icon className={`w-4 h-4 transition-transform duration-300 ${isActive ? 'scale-110 text-brand-cyan' : 'group-hover:scale-110'}`} />
+                <Icon className={`w-4 h-4 transition-transform duration-300 ${isActive ? 'scale-110 text-[#7C6CF2]' : isAiCoach ? 'text-[#8B5CF6] opacity-70 group-hover:opacity-100 group-hover:scale-110' : 'text-[#77777F] group-hover:scale-110 group-hover:text-[#8B82F5]'}`} />
                 <span>{item.label}</span>
-                {isActive && (
-                  <span className="absolute right-3 w-1.5 h-1.5 rounded-full bg-brand-cyan animate-ping" />
-                )}
+                {isAiCoach && <span className="absolute right-3 w-1.5 h-1.5 rounded-full bg-[#8B5CF6] opacity-50" />}
               </NavLink>
             );
           })}
@@ -93,19 +93,19 @@ export default function Sidebar({ onUploadClick, isOpen, onClose }: SidebarProps
               onUploadClick();
               onClose();
             }}
-            className="w-full py-3 bg-gradient-to-r from-brand-cyan to-brand-emerald hover:brightness-115 active:scale-95 text-[#002022] font-semibold text-xs rounded-lg tracking-widest transition-all duration-200 shadow-[0_0_20px_rgba(0,219,231,0.2)] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan"
+            className="w-full py-3 bg-gradient-to-r from-[#6D5CE7] to-[#4F63D8] hover:brightness-110 active:scale-95 text-[#FFFFFF] font-semibold text-xs rounded-lg tracking-widest transition-all duration-200 border border-[#4F63D8]/30 hover:shadow-[0_0_15px_rgba(109,92,231,0.15)] flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]"
           >
-            <UploadCloud className="w-4 h-4" />
+            <UploadCloud className="w-4 h-4 text-[#FFFFFF]" />
             <span>UPLOAD TRADE</span>
           </button>
 
-          <div className="pt-4 border-t border-white/5 flex flex-col gap-1">
+          <div className="pt-4 border-t border-[#202126] flex flex-col gap-1">
             <Link
               to="/app/settings"
               onClick={onClose}
-              className="flex items-center gap-3 px-4 py-2 text-[#849495] hover:text-brand-emerald transition-colors duration-200 text-[11px] font-semibold tracking-wide outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan rounded"
+              className="group flex items-center gap-3 px-4 py-2 text-[#77777F] hover:text-[#D5D5D8] hover:bg-[#141419] rounded-lg transition-colors duration-200 text-[11px] font-semibold tracking-wide outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]"
             >
-              <HelpCircle className="w-3.5 h-3.5" />
+              <HelpCircle className="w-3.5 h-3.5 text-[#707078] group-hover:text-[#8B82F5]" />
               <span>SUPPORT DESK</span>
             </Link>
           </div>
