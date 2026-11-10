@@ -1,2 +1,0 @@
-﻿tests/AuthComponents.test.tsx(42,25): error TS2540: Cannot assign to 'VITE_SUPABASE_URL' because it is a read-only property.
-tests/AuthComponents.test.tsx(43,25): error TS2540: Cannot assign to 'VITE_SUPABASE_ANON_KEY' because it is a read-only property.
